@@ -74,13 +74,11 @@ export class Homes1634513819676 implements MigrationInterface {
             name: 'createdAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()',
           },
           {
             name: 'updateAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()',
           },
         ],
       }),

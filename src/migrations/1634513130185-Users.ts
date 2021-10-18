@@ -46,6 +46,11 @@ export class Users1634513130185 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'permissionlevel',
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
             name: 'birthDate',
             type: 'timestamp',
             isNullable: false,
@@ -54,13 +59,11 @@ export class Users1634513130185 implements MigrationInterface {
             name: 'createdAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()',
           },
           {
             name: 'updateAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()',
           },
         ],
       }),

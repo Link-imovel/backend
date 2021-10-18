@@ -15,6 +15,10 @@ export class Images1634514800773 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
+            name: 'homeId',
+            type: 'uuid',
+          },
+          {
             name: 'image',
             type: 'varchar',
             isNullable: false,
@@ -23,13 +27,11 @@ export class Images1634514800773 implements MigrationInterface {
             name: 'createdAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()',
           },
           {
             name: 'updateAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()',
           },
         ],
       }),

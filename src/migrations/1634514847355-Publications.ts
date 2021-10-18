@@ -15,6 +15,14 @@ export class Publications1634514847355 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
+            name: 'userId',
+            type: 'uuid',
+          },
+          {
+            name: 'homeId',
+            type: 'uuid',
+          },
+          {
             name: 'phone',
             type: 'varchar',
             length: '11',
@@ -42,13 +50,11 @@ export class Publications1634514847355 implements MigrationInterface {
             name: 'createdAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()',
           },
           {
             name: 'updateAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()',
           },
         ],
       }),
