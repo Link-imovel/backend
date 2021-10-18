@@ -67,7 +67,7 @@ export class Homes1634513819676 implements MigrationInterface {
           },
           {
             name: 'description',
-            type: 'longtext',
+            type: 'text',
             isNullable: false,
           },
           {

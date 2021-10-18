@@ -1,25 +1,22 @@
 version: '3.8'
 services:
-  nest-api:
-    container_name: nest-api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-    depends_on:
-      - postgres
-    environment:
-      TYPEORM_CONNECTION: 'postgres'
-      TYPEORM_HOST: postgres
-      TYPEORM_USERNAME: link
-      TYPEORM_PASSWORD: knil
-      TYPEORM_DATABASE: linkdb
-      TYPEORM_PORT: 5432
-      TYPEORM_SYNCHRONIZE: 'true'
-      TYPEORM_LOGGING: 'true'
-      TYPEORM_ENTITIES: entity/*.js,modules/**/entity/*.js;
-      DATABASE_URL: postgresql://link:knil@postgres:5432/linkdb?schema=linkdb&sslmode=prefer
+  # nest-api:
+  #   container_name: nest-api
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   links:
+  #     - postgres:postgres
+  #   command: 'npm run start:dev'
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - postgres
 
   postgres:
     image: postgres:13
