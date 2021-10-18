@@ -1,8 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Home } from './home.entity';
 
 @Entity()
 export class Address {
   @PrimaryGeneratedColumn('uuid')
+  @ManyToOne(() => Home)
   id: string;
 
   @Column()

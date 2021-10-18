@@ -1,12 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Home } from './home.entity';
 
 @Entity()
 export class Image {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  //@Column()
-  //homeId: string;
+  @Column('uuid')
+  @ManyToOne(() => Home)
+  homeId: string;
 
   @Column()
   image: string;

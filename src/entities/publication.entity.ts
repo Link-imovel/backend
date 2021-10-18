@@ -1,15 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Home } from './home.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Publication {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // @Column()
-  // userID: string;
+  @Column()
+  @ManyToOne(() => User)
+  userID: string;
 
-  // @Column()
-  // homeId: string;
+  @Column()
+  @ManyToOne(() => Home)
+  homeId: string;
 
   @Column()
   phone: string;

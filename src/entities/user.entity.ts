@@ -1,8 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Permission } from './permissions.entity';
+import { Publication } from './publication.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
+  @ManyToMany(() => Publication)
   id: string;
 
   @Column()
@@ -20,8 +29,9 @@ export class User {
   @Column()
   birthday: Date;
 
-  // @Column('uuid')
-  // permissionLevel: string;
+  @Column('uuid')
+  @OneToOne(() => Permission)
+  permissionLevel: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
