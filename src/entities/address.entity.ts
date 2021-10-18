@@ -1,27 +1,33 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class User {
+export class Address {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  firstName: string;
+  street: string;
 
   @Column()
-  lastName: string;
+  street2: string;
 
   @Column()
-  email: string;
+  number: number;
 
   @Column()
-  password: string;
+  neighborhood: string;
 
   @Column()
-  birthday: Date;
+  city: string;
 
-  // @Column('uuid')
-  // permissionLevel: string;
+  @Column()
+  state: string;
+
+  @Column()
+  zip: string;
+
+  @Column()
+  ibge: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

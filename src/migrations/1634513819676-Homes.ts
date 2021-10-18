@@ -26,7 +26,9 @@ export class Homes1634513819676 implements MigrationInterface {
           },
           {
             name: 'totalArea',
-            type: 'float',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
           },
           {
             name: 'value',
