@@ -33,11 +33,11 @@ export class foreignkeys1634595148601 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'homes',
+      'addresses',
       new TableForeignKey({
         columnNames: ['id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'addresses',
+        referencedTableName: 'homes',
         onDelete: 'CASCADE',
       }),
     );

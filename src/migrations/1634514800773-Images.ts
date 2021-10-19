@@ -20,7 +20,7 @@ export class Images1634514800773 implements MigrationInterface {
           },
           {
             name: 'image',
-            type: 'varchar',
+            type: 'bytea',
             isNullable: false,
           },
           {
