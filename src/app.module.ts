@@ -5,10 +5,11 @@ import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { getDB } from './config/ormconfig';
+import { UserController } from './controller/user.controller';
 
 @Module({
   imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(getDB())],
-  controllers: [AppController],
+  controllers: [AppController, UserController],
   providers: [AppService],
 })
 export class AppModule {
