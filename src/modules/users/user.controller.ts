@@ -31,7 +31,7 @@ export class UserController {
   }
 
   @Post()
-  async store(@Body() data: UserDTO): Promise<User> {
+  async store(@Body() data: Required<UserDTO>): Promise<User> {
     return await this.userService.create(data);
   }
 
@@ -39,7 +39,7 @@ export class UserController {
   async update(
     @Param('id') id: string,
     @Body() data: Partial<UserDTO>,
-  ): Promise<any> {
+  ): Promise<User> {
     return await this.userService.update({ id, ...data });
   }
 

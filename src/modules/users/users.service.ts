@@ -15,7 +15,7 @@ export class UsersService {
     return await this.usersRepository.find();
   }
 
-  async create(data: UserDTO): Promise<User> {
+  async create(data: Required<UserDTO>): Promise<User> {
     let user = new User();
     user = { ...data };
     return await this.usersRepository.save(user);
