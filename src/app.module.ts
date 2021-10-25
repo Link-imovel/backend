@@ -5,7 +5,7 @@ import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { getDB } from './config/ormconfig';
-import { UserController } from './controller/user.controller';
+import { UserController } from './modules/users/user.controller';
 
 @Module({
   imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(getDB())],

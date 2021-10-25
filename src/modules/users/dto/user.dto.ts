@@ -1,4 +1,4 @@
-interface updateUserDto {
+interface UserDTO {
   id: string;
   firstName: string;
   lastName: string;
@@ -8,6 +8,7 @@ interface updateUserDto {
   permissions: string;
   createdAt: Date;
   updatedAt: Date;
+  permissionLevel: string;
 }
 
-export default updateUserDto;
+export default UserDTO;
