@@ -15,7 +15,7 @@ export class Home {
   @ManyToMany(() => Publication)
   @ManyToMany(() => Image)
   @ManyToOne(() => Address)
-  id: string;
+  id?: string;
 
   @Column()
   type: 'admin' | 'user';
@@ -54,8 +54,12 @@ export class Home {
   description: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt?: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt?: Date;
 }

@@ -5,7 +5,7 @@ import { User } from './user.entity';
 @Entity()
 export class Publication {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
 
   @Column()
   @ManyToOne(() => User)
@@ -31,8 +31,12 @@ export class Publication {
   rented: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt?: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt?: Date;
 }

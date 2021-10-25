@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { getDB } from './config/ormconfig';
+import { SeedingModule } from './config/seed.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -10,6 +11,7 @@ import { UsersModule } from './modules/users/users.module';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(getDB()),
     UsersModule,
+    SeedingModule,
   ],
 })
 export class AppModule {

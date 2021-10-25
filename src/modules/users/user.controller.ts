@@ -6,19 +6,14 @@ import {
   Body,
   Patch,
   Delete,
-  Inject,
 } from '@nestjs/common';
-import { USER_SERVICE } from 'src/config/module.constants';
 import { User } from 'src/entities/user.entity';
 import UserDTO from './dto/user.dto';
-import { UserServiceInterface } from './interfaces/service';
+import { UsersService } from './users.service';
 
 @Controller('user')
 export class UserController {
-  constructor(
-    @Inject(USER_SERVICE)
-    private userService: UserServiceInterface,
-  ) {}
+  constructor(private userService: UsersService) {}
 
   @Get(':id')
   async show(@Param('id') id: string): Promise<User> {

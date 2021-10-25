@@ -5,7 +5,7 @@ import { Home } from './home.entity';
 export class Address {
   @PrimaryGeneratedColumn('uuid')
   @ManyToOne(() => Home)
-  id: string;
+  id?: string;
 
   @Column()
   street: string;
@@ -32,8 +32,12 @@ export class Address {
   ibge: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt?: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt?: Date;
 }

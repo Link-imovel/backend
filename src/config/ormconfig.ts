@@ -7,7 +7,7 @@ export const getDB = (): TypeOrmModuleOptions => ({
   username: process.env.TYPEORM_USERNAME as string,
   password: process.env.TYPEORM_PASSWORD as string,
   database: process.env.TYPEORM_DATABASE as string,
-  entities: ['dist/entities/*.entity.{.ts,.js}'],
+  entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
   migrationsTableName: 'migrations_typeorm',
   migrationsRun: true,

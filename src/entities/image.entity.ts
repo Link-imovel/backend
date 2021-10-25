@@ -4,7 +4,7 @@ import { Home } from './home.entity';
 @Entity()
 export class Image {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
 
   @Column('uuid')
   @ManyToOne(() => Home)
@@ -14,8 +14,12 @@ export class Image {
   image: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt?: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt?: Date;
 }
