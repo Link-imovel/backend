@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Home } from './home.entity';
 import { User } from './user.entity';
 
-@Entity()
+@Entity('publications')
 export class Publication {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
@@ -15,19 +15,19 @@ export class Publication {
   @ManyToOne(() => Home)
   homeId: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
-  @Column()
+  @Column({ nullable: true })
   reserved: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   views: number;
 
-  @Column()
+  @Column({ nullable: true })
   virtualTour: string;
 
-  @Column()
+  @Column({ nullable: true })
   rented: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Home } from './home.entity';
 
-@Entity()
+@Entity('addresses')
 export class Address {
   @PrimaryGeneratedColumn('uuid')
   @ManyToOne(() => Home)
@@ -10,13 +10,13 @@ export class Address {
   @Column()
   street: string;
 
-  @Column()
+  @Column({ nullable: true })
   street2: string;
 
-  @Column()
+  @Column({ nullable: true })
   number: number;
 
-  @Column()
+  @Column({ nullable: true })
   neighborhood: string;
 
   @Column()
@@ -28,7 +28,7 @@ export class Address {
   @Column()
   zip: string;
 
-  @Column()
+  @Column({ nullable: true })
   ibge: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

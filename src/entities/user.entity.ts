@@ -1,14 +1,15 @@
+import { Exclude } from 'class-transformer';
 import {
   Column,
   Entity,
   ManyToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Permission } from './permissions.entity';
 import { Publication } from './publication.entity';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   @ManyToMany(() => Publication)
@@ -24,13 +25,26 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
+
+  @Column({ nullable: true })
+  registry: string;
+
+  @Column({ nullable: true })
+  phone: string;
+
+  @Column({ nullable: true })
+  mobile: string;
+
+  @Column({ nullable: true })
+  creci: string;
 
   @Column()
   birthday: Date;
 
   @Column('uuid')
-  @OneToOne(() => Permission)
+  @ManyToOne(() => Permission)
   permissionLevel: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

@@ -37,6 +37,30 @@ export class UserDTO implements User {
   @IsOptional()
   readonly password: string;
 
+  @ApiProperty({ type: String, required: true, example: '+55 (41) 99999-9999' })
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly phone: string;
+
+  @ApiProperty({ type: String, required: true, example: '+55 (41) 99999-9999' })
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly mobile: string;
+
+  @ApiProperty({ type: String, required: true, example: '012.123.123-12' })
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly registry: string;
+
+  @ApiProperty({ type: String, required: true, example: '12.123-BR' })
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly creci: string;
+
   @ApiProperty({ type: Date, required: true, example: Date.now() })
   @IsDate()
   @IsNotEmpty()

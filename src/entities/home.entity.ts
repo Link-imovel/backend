@@ -9,7 +9,7 @@ import { Address } from './address.entity';
 import { Image } from './image.entity';
 import { Publication } from './publication.entity';
 
-@Entity()
+@Entity('homes')
 export class Home {
   @PrimaryGeneratedColumn('uuid')
   @ManyToMany(() => Publication)
@@ -17,10 +17,10 @@ export class Home {
   @ManyToOne(() => Address)
   id?: string;
 
-  @Column()
-  type: 'admin' | 'user';
+  @Column({ nullable: true })
+  type: string;
 
-  @Column()
+  @Column({ nullable: true })
   ref: string;
 
   @Column('decimal')
@@ -29,28 +29,28 @@ export class Home {
   @Column('decimal')
   value: number;
 
-  @Column()
+  @Column({ nullable: true })
   room: number;
 
-  @Column()
+  @Column({ nullable: true })
   bedroom: number;
 
-  @Column()
+  @Column({ nullable: true })
   bathroom: number;
 
-  @Column()
+  @Column({ nullable: true })
   kitchen: number;
 
-  @Column()
+  @Column({ nullable: true })
   garage: number;
 
-  @Column()
+  @Column({ nullable: true })
   serviceArea: number;
 
-  @Column()
+  @Column({ nullable: true })
   buildAt: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

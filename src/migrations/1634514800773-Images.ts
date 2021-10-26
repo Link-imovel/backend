@@ -26,12 +26,12 @@ export class Images1634514800773 implements MigrationInterface {
           {
             name: 'createdAt',
             type: 'timestamp',
-            isNullable: false,
+            isNullable: true,
           },
           {
-            name: 'updateAt',
+            name: 'updatedAt',
             type: 'timestamp',
-            isNullable: false,
+            isNullable: true,
           },
         ],
       }),

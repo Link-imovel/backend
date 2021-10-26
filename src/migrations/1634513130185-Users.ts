@@ -25,13 +25,13 @@ export class Users1634513130185 implements MigrationInterface {
             name: 'lastName',
             type: 'varchar',
             isNullable: false,
-            length: '50',
+            length: '255',
           },
           {
             name: 'email',
             type: 'varchar',
             isNullable: false,
-            length: '100',
+            length: '255',
             isUnique: true,
           },
           {
@@ -42,9 +42,24 @@ export class Users1634513130185 implements MigrationInterface {
           {
             name: 'registry',
             type: 'varchar',
-            length: '14',
+            length: '25',
             isUnique: true,
             isNullable: false,
+          },
+          {
+            name: 'phone',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'mobile',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'creci',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'permissionlevel',
@@ -52,19 +67,19 @@ export class Users1634513130185 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'birthDate',
+            name: 'birthday',
             type: 'timestamp',
             isNullable: false,
           },
           {
             name: 'createdAt',
             type: 'timestamp',
-            isNullable: false,
+            isNullable: true,
           },
           {
-            name: 'updateAt',
+            name: 'updatedAt',
             type: 'timestamp',
-            isNullable: false,
+            isNullable: true,
           },
         ],
       }),

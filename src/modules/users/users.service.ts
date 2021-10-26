@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from 'src/entities/permissions.entity';
 import { Repository } from 'typeorm';
@@ -19,7 +19,16 @@ export class UsersService {
   }
 
   async create(data: Required<UserDTO>): Promise<User> {
-    let user = new User();
+    let user = await this.usersRepository.findOne({ email: data.email });
+
+    if (user) {
+      throw new HttpException(
+        'User already exists',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    user = new User();
 
     if (data.permissionLevel) user = { ...data };
 
@@ -29,8 +38,8 @@ export class UsersService {
       });
       user = { ...data, permissionLevel };
     }
-
-    return await this.usersRepository.save(user);
+    user = await this.usersRepository.save(user);
+    return await this.usersRepository.findOne({ id: user.id });
   }
 
   async update(data: Partial<UserDTO>): Promise<User> {

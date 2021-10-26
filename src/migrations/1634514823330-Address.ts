@@ -55,12 +55,12 @@ export class Address1634514823330 implements MigrationInterface {
           {
             name: 'createdAt',
             type: 'timestamp',
-            isNullable: false,
+            isNullable: true,
           },
           {
-            name: 'updateAt',
+            name: 'updatedAt',
             type: 'timestamp',
-            isNullable: false,
+            isNullable: true,
           },
         ],
       }),
