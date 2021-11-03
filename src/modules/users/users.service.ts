@@ -4,6 +4,7 @@ import { Permission } from 'src/entities/permissions.entity';
 import { Repository } from 'typeorm';
 import { User } from '../../entities/user.entity';
 import UserDTO from './dto/user.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -38,6 +39,7 @@ export class UsersService {
       });
       user = { ...data, permissionLevel };
     }
+    user.password = bcrypt.hashSync(data.password, 8);
     user = await this.usersRepository.save(user);
     return await this.usersRepository.findOne({ id: user.id });
   }

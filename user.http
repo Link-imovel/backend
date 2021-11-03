@@ -1,0 +1,38 @@
+POST http://localhost:3000/user
+Content-type: application/json
+
+{
+  "firstName": "Gabriel",
+  "lastName": "Jofre",
+  "email": "teste@email.com",
+  "password": "1234",
+  "phone": "+55 (41) 99999-9999",
+  "mobile": "+55 (41) 99999-9999",
+  "registry": "012.123.123-12",
+  "creci": "12.123-BR",
+  "birthday": "1999-01-08",
+  "permissionLevel": ""
+}
+
+###
+
+GET http://localhost:3000/user
+
+###
+
+GET http://localhost:3000/user/
+
+###
+
+PATCH http://localhost:3000/user/
+Content-Type: application/json
+
+{
+  "firstName": "teste",
+  "lastName": "teste",
+  "permissionLevel": ""
+}
+
+###
+
+DELETE http://localhost:3000/user/
