@@ -57,4 +57,8 @@ export class UsersService {
   remove(id: string): void {
     this.usersRepository.delete(id);
   }
+
+  async findUser(email: string): Promise<User | undefined> {
+    return this.usersRepository.findOne({ email: email });
+  }
 }

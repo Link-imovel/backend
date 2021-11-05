@@ -2,10 +2,10 @@ POST http://localhost:3000/user
 Content-type: application/json
 
 {
-  "firstName": "Gabriel",
-  "lastName": "Jofre",
+  "firstName": "teste",
+  "lastName": "teste",
   "email": "teste@email.com",
-  "password": "1234",
+  "password": "123",
   "phone": "+55 (41) 99999-9999",
   "mobile": "+55 (41) 99999-9999",
   "registry": "012.123.123-12",
@@ -20,7 +20,7 @@ GET http://localhost:3000/user
 
 ###
 
-GET http://localhost:3000/user/
+GET http://localhost:3000/user/c8b428ac-8bca-4608-b54f-40b6f4b84b81
 
 ###
 
@@ -30,9 +30,19 @@ Content-Type: application/json
 {
   "firstName": "teste",
   "lastName": "teste",
-  "permissionLevel": ""
+  "permissionLevel": "d1fa1d82-defa-4b98-86b6-86c86bcbd6d2"
 }
 
 ###
 
-DELETE http://localhost:3000/user/
+DELETE http://localhost:3000/user/65e046df-7e70-4c0f-bf31-7d5b3a732b2d
+
+###
+
+POST http://localhost:3000/user/login
+Content-type: application/json
+
+{
+  "username": "teste@email.com",
+  "password": "123"
+}

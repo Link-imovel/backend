@@ -5,14 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { getDB } from './config/ormconfig';
 import { SeedingModule } from './config/seed.module';
-import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(getDB()),
-    UsersModule,
     SeedingModule,
+    AuthModule,
   ],
   providers: [
     {
