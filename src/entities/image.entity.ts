@@ -10,8 +10,10 @@ export class Image {
   @ManyToOne(() => Home)
   homeId: string;
 
-  @Column()
-  image: string;
+  @Column({
+    type: 'bytea',
+  })
+  image: Uint8Array;
 
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

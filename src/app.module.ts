@@ -1,3 +1,4 @@
+import { ImagesModule } from './modules/images/images.module';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -9,6 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
+    ImagesModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(getDB()),
     SeedingModule,
