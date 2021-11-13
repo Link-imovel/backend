@@ -6,6 +6,11 @@ export class CreateAddressDTO implements CreateAddress {
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsNotEmpty()
+  id: string;
+
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
   street: string;
 
   @ApiProperty({ type: String, required: true })

@@ -1,6 +1,9 @@
 interface CreateImage {
-  homeId: string;
   image: Buffer;
 }
 
-export type { CreateImage };
+interface UpdateImage extends CreateImage {
+  id: string;
+}
+
+export type { CreateImage, UpdateImage };

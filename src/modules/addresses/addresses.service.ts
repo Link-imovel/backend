@@ -4,9 +4,10 @@ import { Repository } from 'typeorm';
 import { Address } from '../../entities/address.entity';
 import CreateAddressDTO from './dto/create.dto';
 import UpdateAddressDTO from './dto/update.dto';
+import { IAdressesService } from './interfaces/addresses.service';
 
 @Injectable()
-export class AddressesService {
+export class AddressesService implements IAdressesService {
   constructor(
     @InjectRepository(Address)
     private addressesRepository: Repository<Address>,

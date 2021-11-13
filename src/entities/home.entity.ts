@@ -47,8 +47,8 @@ export class Home {
   @Column({ nullable: true })
   serviceArea: number;
 
-  @Column({ nullable: true })
-  buildAt: string;
+  @Column({ type: 'timestamptz', nullable: true })
+  buildAt: Date;
 
   @Column({ nullable: true })
   description: string;

@@ -5,20 +5,13 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsObject,
 } from 'class-validator';
-import { Homes } from '../interfaces/homes';
+import UpdateAddressDTO from 'src/modules/addresses/dto/update.dto';
+import UpdateImageDTO from 'src/modules/images/dto/update.dto';
+import { UpdateHome } from '../interfaces/homes';
 
-export class HomesDTO implements Homes {
-  @ApiProperty({
-    type: String,
-    required: true,
-    example: '1234567-example-12345-12345',
-  })
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  readonly id: string;
-
+export class UpdateHomeDTO implements UpdateHome {
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsNotEmpty()
@@ -47,7 +40,7 @@ export class HomesDTO implements Homes {
   @IsNumber()
   @IsNotEmpty()
   @IsOptional()
-  readonly rom: number;
+  readonly room: number;
 
   @ApiProperty({ type: Number, required: true, example: 1 })
   @IsNumber()
@@ -79,21 +72,28 @@ export class HomesDTO implements Homes {
   @IsOptional()
   readonly serviceArea: number;
 
-  @ApiProperty({ type: Number, required: true, example: 1 })
-  @IsNumber()
+  @ApiProperty({ type: Number, required: true })
+  @IsDate()
   @IsNotEmpty()
   @IsOptional()
-  readonly buildA: string;
+  readonly buildAt: Date;
 
-  @ApiProperty({ type: Date, required: true, example: Date.now() })
-  @IsDate()
+  @ApiProperty({ type: Number, required: true })
+  @IsString()
+  @IsNotEmpty()
   @IsOptional()
-  readonly createdAt: Date;
+  readonly description: string;
 
-  @ApiProperty({ type: Date, required: true, example: Date.now() })
-  @IsDate()
+  @ApiProperty({ type: () => UpdateAddressDTO, required: true })
+  @IsObject()
+  @IsNotEmpty()
   @IsOptional()
-  readonly updatedAt: Date;
+  readonly address: UpdateAddressDTO;
+
+  @ApiProperty({ type: () => UpdateImageDTO, required: true })
+  @IsNotEmpty()
+  @IsOptional()
+  readonly images: UpdateImageDTO | UpdateImageDTO[];
 }
 
-export default HomesDTO;
+export default UpdateHomeDTO;

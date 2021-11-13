@@ -20,9 +20,9 @@ export class ImagesService implements IImageService {
     return await this.imageRepository.find({ homeId });
   }
 
-  async create(data: CreateImage): Promise<Image> {
+  async create(homeId: string, data: CreateImage): Promise<Image> {
     const image = new Image();
-    image.homeId = data.homeId;
+    image.homeId = homeId;
     image.image = data.image;
     const id = await this.imageRepository.save(image);
     return await this.imageRepository.findOne(id);

@@ -5,33 +5,22 @@ import {
   Post,
   Body,
   Patch,
-  Delete,
   UseGuards,
 } from '@nestjs/common';
 import { Home } from 'src/entities/home.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { HomesDTO } from './dto/homes.dto';
+import CreateHomeDTO from './dto/create.dto';
+import UpdateHomeDTO from './dto/update.dto';
 import { HomesService } from './homes.service';
+import { IHomesController } from './interfaces/homes.controller';
 
 @Controller('homes')
-export class HomesController {
+export class HomesController implements IHomesController {
   constructor(private homesService: HomesService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async show(@Param('id') id: string): Promise<Home> {
-    return await this.homesService.findOne(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async index(): Promise<Home[]> {
-    return await this.homesService.list();
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Post()
-  async store(@Body() data: Required<HomesDTO>): Promise<Home> {
+  async create(@Body() data: CreateHomeDTO): Promise<Home> {
     return await this.homesService.create(data);
   }
 
@@ -39,14 +28,14 @@ export class HomesController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() data: Partial<HomesDTO>,
+    @Body() data: UpdateHomeDTO,
   ): Promise<Home> {
-    return await this.homesService.update({ id, ...data });
+    return await this.homesService.update(id, data);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  async destroy(@Param('id') id: string): Promise<void> {
-    this.homesService.remove(id);
+  @Get(':id')
+  async show(@Param('id') id: string): Promise<Home> {
+    return await this.homesService.find(id);
   }
 }
