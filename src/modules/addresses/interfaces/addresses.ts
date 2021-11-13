@@ -1,5 +1,4 @@
-export interface Addresses {
-  id: string;
+interface CreateAddress {
   street: string;
   street2: string;
   city: string;
@@ -8,6 +7,8 @@ export interface Addresses {
   neighborhood: string;
   number: number;
   zip: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
+
+type UpdateAddress = Partial<CreateAddress>;
+
+export type { CreateAddress, UpdateAddress };
