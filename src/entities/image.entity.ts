@@ -7,7 +7,7 @@ export class Image {
   id?: string;
 
   @Column('uuid')
-  @ManyToOne(() => Home)
+  @ManyToOne(() => Home, (home) => home.id)
   homeId: string;
 
   @Column({

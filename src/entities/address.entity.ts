@@ -4,7 +4,7 @@ import { Home } from './home.entity';
 @Entity('addresses')
 export class Address {
   @PrimaryGeneratedColumn('uuid')
-  @OneToOne(() => Home)
+  @OneToOne(() => Home, (home) => home.id)
   id?: string;
 
   @Column()

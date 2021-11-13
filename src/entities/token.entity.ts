@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity('tokens')
@@ -10,7 +10,7 @@ export class Token {
   hash: string;
 
   @Column('uuid')
-  @OneToOne(() => User)
+  @ManyToOne(() => User, (user) => user.id)
   userId: string;
 
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })

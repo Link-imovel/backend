@@ -14,7 +14,7 @@ import { Publication } from './publication.entity';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  @ManyToMany(() => Publication)
+  @ManyToMany(() => Publication, (publication) => publication.userID)
   id?: string;
 
   @Column()

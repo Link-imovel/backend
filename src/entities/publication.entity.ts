@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToOne,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Home } from './home.entity';
 import { User } from './user.entity';
 
@@ -8,11 +14,11 @@ export class Publication {
   id?: string;
 
   @Column()
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.id)
   userID: string;
 
   @Column()
-  @ManyToOne(() => Home)
+  @OneToOne(() => Home, (home) => home.id)
   homeId: string;
 
   @Column({ nullable: true })
