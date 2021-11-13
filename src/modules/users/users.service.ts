@@ -4,7 +4,8 @@ import { Permission } from 'src/entities/permissions.entity';
 import { Repository } from 'typeorm';
 import { User } from '../../entities/user.entity';
 import UserDTO from './dto/user.dto';
-import * as bcrypt from 'bcryptjs';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {

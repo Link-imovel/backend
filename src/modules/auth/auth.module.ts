@@ -7,10 +7,16 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 import { TokenModule } from '../token/token.module';
+import { PublicationModule } from '../publications/publications.module';
+import { HomeModule } from '../homes/homes.module';
+import { AddressModule } from '../addresses/addresses.module';
 
 @Module({
   imports: [
     UsersModule,
+    PublicationModule,
+    HomeModule,
+    AddressModule,
     PassportModule,
     TokenModule,
     JwtModule.register({

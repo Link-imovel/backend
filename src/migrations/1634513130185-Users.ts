@@ -62,7 +62,7 @@ export class Users1634513130185 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'permissionlevel',
+            name: 'permissionLevel',
             type: 'uuid',
             isNullable: false,
           },

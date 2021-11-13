@@ -5,7 +5,7 @@ export class foreignkeys1634595148601 implements MigrationInterface {
     await queryRunner.createForeignKey(
       'users',
       new TableForeignKey({
-        columnNames: ['permissionlevel'],
+        columnNames: ['permissionLevel'],
         referencedColumnNames: ['id'],
         referencedTableName: 'permissions',
         onDelete: 'CASCADE',
@@ -64,7 +64,7 @@ export class foreignkeys1634595148601 implements MigrationInterface {
     await queryRunner.dropForeignKey(
       'users',
       tableUser.foreignKeys.find(
-        (fk) => fk.columnNames.indexOf('permissionlevel') !== -1,
+        (fk) => fk.columnNames.indexOf('permissionLevel') !== -1,
       ),
     );
 

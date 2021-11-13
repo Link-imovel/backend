@@ -1,15 +1,15 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.entity';
 
-@Entity('Tokens')
+@Entity('tokens')
 export class Token {
   @PrimaryGeneratedColumn('uuid')
-  @OneToOne(() => User)
-  id?: string;
+  id: string;
 
   @Column()
   hash: string;
 
-  @Column()
-  username: string;
+  @Column('uuid')
+  @OneToOne(() => User)
+  userId: string;
 }

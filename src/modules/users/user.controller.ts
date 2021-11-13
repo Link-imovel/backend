@@ -23,6 +23,7 @@ export class UserController {
     private authService: AuthService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async show(@Param('id') id: string): Promise<User> {
     return await this.userService.findOne(id);
@@ -39,6 +40,7 @@ export class UserController {
     return await this.userService.create(data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -47,6 +49,7 @@ export class UserController {
     return await this.userService.update({ id, ...data });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async destroy(@Param('id') id: string): Promise<void> {
     this.userService.remove(id);

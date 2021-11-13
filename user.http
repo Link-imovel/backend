@@ -22,6 +22,7 @@ GET http://localhost:3000/user
 
 GET http://localhost:3000/user/c8b428ac-8bca-4608-b54f-40b6f4b84b81
 
+
 ###
 
 PATCH http://localhost:3000/user/
@@ -45,4 +46,13 @@ Content-type: application/json
 {
   "username": "teste@email.com",
   "password": "123"
+}
+
+###
+
+PUT http://localhost:3000/token/refresh
+Content-type: application/json
+
+{
+  "oldToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlQGVtYWlsLmNvbSIsInN1YiI6ImM4YjQyOGFjLThiY2EtNDYwOC1iNTRmLTQwYjZmNGI4NGI4MSIsImlhdCI6MTYzNjQ5MzkxMSwiZXhwIjoxNjM2NDkzOTcxfQ.867sTNPurlfW3ZkjbyqMnzY3_SxRvnJIyaATXzsk154"
 }

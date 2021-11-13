@@ -10,6 +10,6 @@ export const getDB = (): TypeOrmModuleOptions => ({
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
   migrationsTableName: 'migrations_typeorm',
-  migrationsRun: false,
-  synchronize: true,
+  migrationsRun: true,
+  synchronize: false,
 });

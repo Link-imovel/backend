@@ -21,30 +21,29 @@ export class TokenService {
     private authService: AuthService,
   ) {}
 
-  async saveToken(hash: string, username: string) {
-    const objToken = await this.TokenRepository.findOne({ username: username });
-    if (objToken) {
-      this.TokenRepository.update(objToken.id, { hash: hash });
-    } else {
+  async saveToken(hash: string, userId: string) {
+    const objToken = await this.TokenRepository.findOne({ userId });
+    if (!objToken) {
       this.TokenRepository.insert({
-        hash: hash,
-        username: username,
+        hash,
+        userId,
       });
+      return;
     }
+    this.TokenRepository.update(objToken.id, { hash });
   }
 
   async refreshToken(oldToken: string) {
     const objToken = await this.TokenRepository.findOne({ hash: oldToken });
-    if (objToken) {
-      const user = await this.userService.findUser(objToken.username);
-      return this.authService.login(user);
-    } else {
-      return new HttpException(
+    if (!objToken) {
+      throw new HttpException(
         {
           errorMessage: 'Invalid Token',
         },
         HttpStatus.UNAUTHORIZED,
       );
     }
+    const user = await this.userService.findOne(objToken.userId);
+    return this.authService.login(user);
   }
 }

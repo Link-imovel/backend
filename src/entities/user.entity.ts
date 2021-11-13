@@ -1,10 +1,12 @@
 import { Exclude } from 'class-transformer';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToMany,
-  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Permission } from './permissions.entity';
 import { Publication } from './publication.entity';
@@ -44,7 +46,7 @@ export class User {
   birthday: Date;
 
   @Column('uuid')
-  @ManyToOne(() => Permission)
+  @OneToOne(() => Permission)
   permissionLevel: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

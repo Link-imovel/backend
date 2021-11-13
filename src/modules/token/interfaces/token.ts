@@ -1,5 +1,5 @@
-export interface User {
+export interface Token {
   id: string;
   hash: string;
-  username: string;
+  userId: string;
 }
