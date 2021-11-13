@@ -6,37 +6,35 @@ import {
   Body,
   Patch,
   Delete,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/entities/user.entity';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import UserDTO from './dto/user.dto';
+import CreateUserDTO from './dto/create.dto';
+import LoginUserDTO from './dto/login.dto';
+import UpdateUserDTO from './dto/update.dto';
+import { IUserController } from './interfaces/user.controller';
+import { LoginResponse } from '../auth/interfaces/auth';
+import UpdatePasswordUserDTO from './dto/updatePassword.dto';
+import { User } from 'src/entities/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('user')
-export class UserController {
+export class UserController implements IUserController {
   constructor(
     private userService: UsersService,
     private authService: AuthService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async show(@Param('id') id: string): Promise<User> {
-    return await this.userService.findOne(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async index(): Promise<User[]> {
-    return await this.userService.list();
+  @UseGuards(AuthGuard('local'))
+  @Post('login')
+  async login(@Body() data: LoginUserDTO): Promise<LoginResponse> {
+    return this.authService.login(data);
   }
 
   @Post()
-  async store(@Body() data: Required<UserDTO>): Promise<User> {
+  async create(@Body() data: CreateUserDTO): Promise<User> {
     return await this.userService.create(data);
   }
 
@@ -44,20 +42,41 @@ export class UserController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() data: Partial<UserDTO>,
+    @Body() data: UpdateUserDTO,
   ): Promise<User> {
-    return await this.userService.update({ id, ...data });
+    return await this.userService.update(id, data);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  async destroy(@Param('id') id: string): Promise<void> {
-    this.userService.remove(id);
+  @Patch('password/:id')
+  async updatePassword(
+    @Param('id') id: string,
+    @Body() data: UpdatePasswordUserDTO,
+  ): Promise<User> {
+    return await this.userService.setPassword(id, data);
   }
 
-  @UseGuards(AuthGuard('local'))
-  @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async getUser(@Param('id') id: string): Promise<User> {
+    return await this.userService.find(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getUsers(): Promise<User[]> {
+    return await this.userService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  async setInactive(@Param('id') id: string): Promise<void> {
+    this.userService.deactivate(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('activate')
+  async setActive(@Param('id') id: string): Promise<void> {
+    this.userService.activate(id);
   }
 }

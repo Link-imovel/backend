@@ -4,6 +4,9 @@ import { UsersService } from '../users/users.service';
 const bcrypt = require('bcrypt');
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from '../token/token.service';
+import LoginUserDTO from '../users/dto/login.dto';
+import { User } from 'src/entities/user.entity';
+import { LoginResponse } from './interfaces/auth';
 
 @Injectable()
 export class AuthService {
@@ -13,25 +16,27 @@ export class AuthService {
     private tokenService: TokenService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.usersService.findUser(email);
+  async validateUser(email: string, password: string): Promise<User | unknown> {
+    const user = await this.usersService.findByEmail(email);
     if (user && bcrypt.compareSync(password, user.password)) {
-      const { password, ...result } = user;
-      return result;
+      return user;
     }
-    return null;
+    return {};
   }
 
-  async login(user: any) {
-    const userData = await this.usersService.findUser(user.email);
+  async login(user: LoginUserDTO): Promise<LoginResponse> {
+    const userData = await this.usersService.findByEmail(user.email);
+
     if (userData.id) {
-      const payload = { username: user.email, sub: user.id };
+      const payload = { username: userData.email, sub: userData.id };
       const token = this.jwtService.sign(payload);
       this.tokenService.saveToken(token, userData.id);
       return {
         access_token: token,
+        user: userData,
       };
     }
+
     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
 }

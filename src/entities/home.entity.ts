@@ -1,8 +1,8 @@
 import {
   Column,
   Entity,
-  ManyToMany,
-  ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Address } from './address.entity';
@@ -12,9 +12,9 @@ import { Publication } from './publication.entity';
 @Entity('homes')
 export class Home {
   @PrimaryGeneratedColumn('uuid')
-  @ManyToMany(() => Publication)
-  @ManyToMany(() => Image)
-  @ManyToOne(() => Address)
+  @OneToOne(() => Publication)
+  @OneToMany(() => Image, (image) => image.homeId)
+  @OneToOne(() => Address)
   id?: string;
 
   @Column({ nullable: true })
@@ -53,13 +53,13 @@ export class Home {
   @Column({ nullable: true })
   description: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt?: Date;
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
   @Column({
-    type: 'timestamp',
+    type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
-  updatedAt?: Date;
+  updatedAt: Date;
 }

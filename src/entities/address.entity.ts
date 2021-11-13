@@ -1,10 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Home } from './home.entity';
 
 @Entity('addresses')
 export class Address {
   @PrimaryGeneratedColumn('uuid')
-  @ManyToOne(() => Home)
+  @OneToOne(() => Home)
   id?: string;
 
   @Column()
@@ -31,13 +31,13 @@ export class Address {
   @Column({ nullable: true })
   ibge: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt?: Date;
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
   @Column({
-    type: 'timestamp',
+    type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
-  updatedAt?: Date;
+  updatedAt: Date;
 }

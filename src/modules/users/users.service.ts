@@ -2,13 +2,17 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from 'src/entities/permissions.entity';
 import { Repository } from 'typeorm';
+import { IUserService } from './interfaces/user.service';
 import { User } from '../../entities/user.entity';
-import UserDTO from './dto/user.dto';
+import CreateUserDTO from './dto/create.dto';
+import UpdateUserDTO from './dto/update.dto';
+import UpdatePasswordUserDTO from './dto/updatePassword.dto';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 
 @Injectable()
-export class UsersService {
+export class UsersService implements IUserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -16,12 +20,17 @@ export class UsersService {
     private permissionRepository: Repository<Permission>,
   ) {}
 
-  async list(): Promise<User[]> {
-    return await this.usersRepository.find();
-  }
-
-  async create(data: Required<UserDTO>): Promise<User> {
-    let user = await this.usersRepository.findOne({ email: data.email });
+  async create(data: CreateUserDTO): Promise<User> {
+    let user = await this.usersRepository.findOne({
+      where: [
+        {
+          email: data.email,
+        },
+        {
+          registry: data.registry,
+        },
+      ],
+    });
 
     if (user) {
       throw new HttpException(
@@ -31,35 +40,47 @@ export class UsersService {
     }
 
     user = new User();
-
-    if (data.permissionLevel) user = { ...data };
-
-    if (!data.permissionLevel) {
-      const { id: permissionLevel } = await this.permissionRepository.findOne({
-        name: 'user',
-      });
-      user = { ...data, permissionLevel };
-    }
+    const { id: permissionLevel } = await this.permissionRepository.findOne({
+      name: 'user',
+    });
+    user = {
+      ...data,
+      permissionLevel,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     user.password = bcrypt.hashSync(data.password, 8);
     user = await this.usersRepository.save(user);
     return await this.usersRepository.findOne({ id: user.id });
   }
 
-  async update(data: Partial<UserDTO>): Promise<User> {
-    const { id } = await this.usersRepository.findOne(data.id);
-    await this.usersRepository.update({ id }, { ...data });
-    return this.usersRepository.findOne(data.id);
-  }
-
-  async findOne(id: string): Promise<User> {
+  async update(id: string, data: UpdateUserDTO): Promise<User> {
+    const user = await this.usersRepository.findOne(id);
+    await this.usersRepository.update(user, { ...data });
     return this.usersRepository.findOne(id);
   }
 
-  remove(id: string): void {
-    this.usersRepository.delete(id);
+  setPassword: (id: string, data: UpdatePasswordUserDTO) => Promise<User>;
+
+  async find(id: string): Promise<User> {
+    return this.usersRepository.findOne(id);
   }
 
-  async findUser(email: string): Promise<User | undefined> {
-    return this.usersRepository.findOne({ email: email });
+  async findByEmail(email: string): Promise<User> {
+    return this.usersRepository.findOne({ email });
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.usersRepository.find();
+  }
+
+  async deactivate(id: string): Promise<unknown> {
+    // @TODO: Deactivate method
+    return this.usersRepository.findOne(id);
+  }
+
+  async activate(id: string): Promise<User> {
+    // @TODO: Activate method
+    return this.usersRepository.findOne(id);
   }
 }

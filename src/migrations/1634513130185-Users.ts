@@ -68,17 +68,17 @@ export class Users1634513130185 implements MigrationInterface {
           },
           {
             name: 'birthday',
-            type: 'timestamp',
+            type: 'timestamptz',
             isNullable: false,
           },
           {
             name: 'createdAt',
-            type: 'timestamp',
+            type: 'timestamptz',
             isNullable: true,
           },
           {
             name: 'updatedAt',
-            type: 'timestamp',
+            type: 'timestamptz',
             isNullable: true,
           },
         ],

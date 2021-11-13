@@ -21,12 +21,12 @@ export class Permissions1634514865573 implements MigrationInterface {
           },
           {
             name: 'createdAt',
-            type: 'timestamp',
+            type: 'timestamptz',
             isNullable: true,
           },
           {
             name: 'updatedAt',
-            type: 'timestamp',
+            type: 'timestamptz',
             isNullable: true,
           },
         ],

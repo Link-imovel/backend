@@ -28,6 +28,16 @@ export class Tokens1636062455613 implements MigrationInterface {
             name: 'userId',
             type: 'uuid',
           },
+          {
+            name: 'createdAt',
+            type: 'timestamptz',
+            isNullable: true,
+          },
+          {
+            name: 'updatedAt',
+            type: 'timestamptz',
+            isNullable: true,
+          },
         ],
       }),
     );

@@ -43,7 +43,7 @@ export class TokenService {
         HttpStatus.UNAUTHORIZED,
       );
     }
-    const user = await this.userService.findOne(objToken.userId);
+    const user = await this.userService.find(objToken.userId);
     return this.authService.login(user);
   }
 }

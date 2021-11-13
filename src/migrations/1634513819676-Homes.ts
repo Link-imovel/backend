@@ -63,7 +63,7 @@ export class Homes1634513819676 implements MigrationInterface {
           },
           {
             name: 'builtAt',
-            type: 'timestamp',
+            type: 'timestamptz',
           },
           {
             name: 'description',
@@ -72,12 +72,12 @@ export class Homes1634513819676 implements MigrationInterface {
           },
           {
             name: 'createdAt',
-            type: 'timestamp',
+            type: 'timestamptz',
             isNullable: true,
           },
           {
             name: 'updatedAt',
-            type: 'timestamp',
+            type: 'timestamptz',
             isNullable: true,
           },
         ],
