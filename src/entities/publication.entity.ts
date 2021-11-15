@@ -2,10 +2,11 @@ import {
   Column,
   Entity,
   OneToOne,
-  ManyToOne,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Home } from './home.entity';
 import { User } from './user.entity';
@@ -17,10 +18,10 @@ export class Publication {
 
   @Column()
   @ManyToOne(() => User, (user) => user.id)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   userId: string;
 
   @Column()
-  @OneToOne(() => Home, (home) => home.id)
   homeId: string;
 
   @Column({ nullable: true })
@@ -47,4 +48,8 @@ export class Publication {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @OneToOne(() => Home, (home) => home, { eager: true })
+  @JoinColumn({ name: 'homeId', referencedColumnName: 'id' })
+  home: Home;
 }

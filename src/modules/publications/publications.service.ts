@@ -66,11 +66,8 @@ export class PublicationsService implements IPublicationsService {
     }
 
     await this.homesService.update(pub.homeId, data.home);
-    pub.phone = data.phone;
-    pub.virtualTour = data.virtualTour;
-    pub.views = data.views;
-    pub.reserved = data.reserved;
-    await this.publicationsRepository.update(id, pub);
+    const newData = { ...pub, ...data };
+    await this.publicationsRepository.update(id, newData as any);
     return await this.publicationsRepository.findOne(id);
   }
 

@@ -20,14 +20,15 @@ export class Address1634514823330 implements MigrationInterface {
           {
             name: 'street2',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'number',
             type: 'varchar',
-            isNullable: false,
+            isNullable: true,
           },
           {
-            name: 'neighbourhood',
+            name: 'neighborhood',
             type: 'varchar',
             isNullable: false,
           },
@@ -44,13 +45,12 @@ export class Address1634514823330 implements MigrationInterface {
           {
             name: 'zip',
             type: 'varchar',
-            length: '8',
             isNullable: false,
           },
           {
             name: 'ibge',
             type: 'varchar',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'createdAt',

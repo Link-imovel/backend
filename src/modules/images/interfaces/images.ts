@@ -1,5 +1,5 @@
 interface CreateImage {
-  image: Buffer;
+  image: string;
 }
 
 interface UpdateImage extends CreateImage {

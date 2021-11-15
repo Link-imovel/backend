@@ -25,26 +25,27 @@ export class Publications1634514847355 implements MigrationInterface {
           {
             name: 'phone',
             type: 'varchar',
-            length: '11',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'reserved',
             type: 'boolean',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'views',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'virtualTour',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'rented',
             type: 'boolean',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'createdAt',

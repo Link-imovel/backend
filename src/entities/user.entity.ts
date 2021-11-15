@@ -3,7 +3,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -15,7 +17,7 @@ import { Publication } from './publication.entity';
 export class User {
   @PrimaryGeneratedColumn('uuid')
   @ManyToMany(() => Publication, (publication) => publication.userId)
-  id?: string;
+  id: string;
 
   @Column()
   firstName: string;
@@ -58,4 +60,10 @@ export class User {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @OneToMany(() => Publication, (publication) => publication.userId, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'id', referencedColumnName: 'userId' })
+  publication: Publication[];
 }

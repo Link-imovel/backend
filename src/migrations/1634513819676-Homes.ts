@@ -22,13 +22,14 @@ export class Homes1634513819676 implements MigrationInterface {
           {
             name: 'ref',
             type: 'varchar',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'totalArea',
             type: 'decimal',
             precision: 10,
             scale: 2,
+            isNullable: true,
           },
           {
             name: 'value',
@@ -40,35 +41,42 @@ export class Homes1634513819676 implements MigrationInterface {
           {
             name: 'room',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'bedroom',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'bathroom',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'kitchen',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'garage',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'serviceArea',
             type: 'int',
+            isNullable: true,
           },
           {
-            name: 'builtAt',
+            name: 'buildAt',
             type: 'timestamptz',
+            isNullable: true,
           },
           {
             name: 'description',
             type: 'text',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'createdAt',

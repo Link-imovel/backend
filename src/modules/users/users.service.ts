@@ -43,12 +43,13 @@ export class UsersService implements IUserService {
     const { id: permissionLevel } = await this.permissionRepository.findOne({
       name: 'user',
     });
-    user = {
-      ...data,
-      permissionLevel,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+
+    Object.keys(data).map((val) => {
+      user[val] = data[val];
+    });
+
+    user.permissionLevel = permissionLevel;
+
     user.password = bcrypt.hashSync(data.password, 8);
     user = await this.usersRepository.save(user);
     return await this.usersRepository.findOne({ id: user.id });
@@ -56,7 +57,7 @@ export class UsersService implements IUserService {
 
   async update(id: string, data: UpdateUserDTO): Promise<User> {
     const user = await this.usersRepository.findOne(id);
-    await this.usersRepository.update(user, { ...data });
+    await this.usersRepository.update(user, { ...user, ...data });
     return this.usersRepository.findOne(id);
   }
 

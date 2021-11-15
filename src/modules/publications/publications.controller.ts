@@ -8,6 +8,7 @@ import {
   Query,
   UseGuards,
   Request,
+  Body,
 } from '@nestjs/common';
 import { Publication } from 'src/entities/publication.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -31,19 +32,19 @@ export class PublicationController implements IPublicationsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post(':userId')
+  @Post()
   async create(
-    @Param('userId') userId: string,
-    data: CreatePublicationDTO,
+    @Request() req: any,
+    @Body() data: CreatePublicationDTO,
   ): Promise<Publication> {
-    return await this.publicationService.create(userId, data);
+    return await this.publicationService.create(req.user.id, data);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    data: UpdatePublicationDTO,
+    @Body() data: UpdatePublicationDTO,
     @Request() req: any,
   ): Promise<Publication> {
     return await this.publicationService.update(id, data, req.user);

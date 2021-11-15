@@ -1,13 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 import { CreateImage } from '../interfaces/images';
 
 export class CreateImageDTO implements CreateImage {
-  @ApiProperty({ type: Buffer, required: true })
-  @Type(() => Buffer)
+  @ApiProperty({ type: String, required: true })
   @IsNotEmpty()
-  readonly image: Buffer;
+  readonly image: string;
 }
 
 export default CreateImageDTO;

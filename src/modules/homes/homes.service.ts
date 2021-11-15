@@ -18,12 +18,20 @@ export class HomesService implements IHomesService {
   ) {}
 
   async create(data: CreateHomeDTO): Promise<Home> {
-    let home = new Home();
-    home = {
-      ...data,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    const home = new Home();
+    home.type = data.type;
+    home.description = data.description;
+    home.ref = data.ref;
+    home.totalArea = data.totalArea;
+    home.value = data.value;
+    home.room = data.room;
+    home.bedroom = data.bedroom;
+    home.bathroom = data.bathroom;
+    home.kitchen = data.kitchen;
+    home.garage = data.garage;
+    home.serviceArea = data.serviceArea;
+    home.buildAt = data.buildAt;
+
     const { id } = await this.homesRepository.save(home);
     await this.addressesService.create({ id, ...data.address });
     if (data.images) {
@@ -35,7 +43,7 @@ export class HomesService implements IHomesService {
           )
         : await this.imagesService.create(id, data.images);
     }
-    return await this.homesRepository.findOne(id);
+    return this.homesRepository.findOne(id);
   }
 
   async update(id: string, data: UpdateHomeDTO): Promise<Home> {
@@ -55,7 +63,10 @@ export class HomesService implements IHomesService {
             )
           : await this.imagesService.update(data.images.id, data.images.image);
       }
-      await this.homesRepository.update(home, data);
+
+      const newData = { ...home, ...data };
+
+      await this.homesRepository.update(home, newData as any);
       return this.homesRepository.findOne(id);
     }
 

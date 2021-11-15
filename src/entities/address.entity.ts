@@ -12,7 +12,7 @@ import { Home } from './home.entity';
 export class Address {
   @PrimaryGeneratedColumn('uuid')
   @OneToOne(() => Home, (home) => home.id)
-  id?: string;
+  id: string;
 
   @Column()
   street: string;

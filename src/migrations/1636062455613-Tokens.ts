@@ -22,7 +22,6 @@ export class Tokens1636062455613 implements MigrationInterface {
           {
             name: 'hash',
             type: 'varchar',
-            length: '255',
           },
           {
             name: 'userId',

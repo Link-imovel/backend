@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -9,15 +10,11 @@ import {
 } from 'typeorm';
 import { Address } from './address.entity';
 import { Image } from './image.entity';
-import { Publication } from './publication.entity';
 
 @Entity('homes')
 export class Home {
   @PrimaryGeneratedColumn('uuid')
-  @OneToOne(() => Publication)
-  @OneToMany(() => Image, (image) => image.homeId)
-  @OneToOne(() => Address)
-  id?: string;
+  id: string;
 
   @Column({ nullable: true })
   type: string;
@@ -64,4 +61,12 @@ export class Home {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @OneToMany(() => Image, (image) => image.homeId, { eager: true })
+  @JoinColumn({ name: 'id', referencedColumnName: 'homeId' })
+  images: Image[];
+
+  @OneToOne(() => Address, (address) => address, { eager: true })
+  @JoinColumn({ name: 'id', referencedColumnName: 'id' })
+  address: Address;
 }

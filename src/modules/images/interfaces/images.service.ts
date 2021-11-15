@@ -5,7 +5,7 @@ interface IImageService {
   getImage: (imageId: string) => Promise<Image>;
   getImages: (homeId: string) => Promise<Image[]>;
   create: (homeId: string, data: CreateImage) => Promise<Image>;
-  update: (id: string, file: Buffer) => Promise<Image>;
+  update: (id: string, file: string) => Promise<Image>;
   delete: (imageId: string) => void;
   deleteAll: (homeId: string) => void;
 }

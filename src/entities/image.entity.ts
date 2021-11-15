@@ -1,20 +1,22 @@
+import { Home } from './home.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Home } from './home.entity';
 
 @Entity('images')
 export class Image {
   @PrimaryGeneratedColumn('uuid')
-  id?: string;
+  id: string;
 
-  @Column('uuid')
+  @Column()
   @ManyToOne(() => Home, (home) => home.id)
+  @JoinColumn({ name: 'homeId', referencedColumnName: 'id' })
   homeId: string;
 
   @Column({
