@@ -15,7 +15,7 @@ export class Publication {
 
   @Column()
   @ManyToOne(() => User, (user) => user.id)
-  userID: string;
+  userId: string;
 
   @Column()
   @OneToOne(() => Home, (home) => home.id)
