@@ -4,17 +4,21 @@ import CreateHomeDTO from 'src/modules/homes/dto/create.dto';
 import { CreatePublication } from '../interfaces/publication';
 
 export class CreatePublicationDTO implements CreatePublication {
-  @ApiProperty({ type: String, required: false })
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  readonly userId: string;
+
+  @ApiProperty({ type: String, nullable: true })
   @IsString()
   @IsOptional()
   readonly virtualTour?: string;
 
-  @ApiProperty({ type: String, required: false })
+  @ApiProperty({ type: String, nullable: true })
   @IsString()
   @IsOptional()
   readonly phone: string;
 
-  @ApiProperty({ type: () => CreateHomeDTO, required: false })
+  @ApiProperty({ type: () => CreateHomeDTO, required: true })
   @IsNotEmpty()
   @IsObject()
   readonly home: CreateHomeDTO;

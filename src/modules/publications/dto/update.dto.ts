@@ -11,29 +11,29 @@ import UpdateHomeDTO from 'src/modules/homes/dto/update.dto';
 import { UpdatePublication } from '../interfaces/publication';
 
 export class UpdatePublicationDTO implements UpdatePublication {
-  @ApiProperty({ type: Boolean, required: false })
+  @ApiProperty({ type: Boolean, nullable: true })
   @IsBoolean()
   @IsNotEmpty()
   @IsOptional()
   readonly reserved?: boolean;
 
-  @ApiProperty({ type: Boolean, required: false })
+  @ApiProperty({ type: Boolean, nullable: true })
   @IsNumber()
   @IsNotEmpty()
   @IsOptional()
   readonly views?: number;
 
-  @ApiProperty({ type: String, required: false })
+  @ApiProperty({ type: String, nullable: true })
   @IsString()
   @IsOptional()
   readonly virtualTour?: string;
 
-  @ApiProperty({ type: String, required: false })
+  @ApiProperty({ type: String, nullable: true })
   @IsString()
   @IsOptional()
   readonly phone: string;
 
-  @ApiProperty({ type: () => UpdateHomeDTO, required: false })
+  @ApiProperty({ type: () => UpdateHomeDTO, nullable: true })
   @IsObject()
   @IsNotEmpty()
   @IsOptional()

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Publication } from '../../entities/publication.entity';
@@ -15,8 +15,15 @@ export class PublicationsService implements IPublicationsService {
     private homesService: HomesService,
   ) {}
 
-  async findAll(): Promise<Publication[]> {
-    return await this.publicationsRepository.find({ rented: false });
+  async findAll(page?: number): Promise<Publication[]> {
+    const take = page ? page * 10 : 10;
+    const skip = page ? page - 1 * take : 0;
+
+    return await this.publicationsRepository.find({
+      where: { rented: false },
+      take,
+      skip,
+    });
   }
 
   async find(id: string): Promise<Publication> {
@@ -44,8 +51,20 @@ export class PublicationsService implements IPublicationsService {
     return await this.publicationsRepository.findOne(id);
   }
 
-  async update(id: string, data: UpdatePublicationDTO): Promise<Publication> {
+  async update(
+    id: string,
+    data: UpdatePublicationDTO,
+    user: any,
+  ): Promise<Publication> {
     const pub = await this.publicationsRepository.findOne(id);
+    if (!pub) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (pub.userId !== user.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
+
     await this.homesService.update(pub.homeId, data.home);
     pub.phone = data.phone;
     pub.virtualTour = data.virtualTour;
@@ -55,13 +74,33 @@ export class PublicationsService implements IPublicationsService {
     return await this.publicationsRepository.findOne(id);
   }
 
-  async deactivate(id: string): Promise<void> {
+  async deactivate(id: string, user: any): Promise<void> {
+    const pub = await this.publicationsRepository.findOne(id);
+
+    if (!pub) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (pub.userId !== user.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
+
     await this.publicationsRepository.update(id, {
       rented: true,
     });
   }
 
-  async activate(id: string): Promise<Publication> {
+  async activate(id: string, user: any): Promise<Publication> {
+    const pub = await this.publicationsRepository.findOne(id);
+
+    if (!pub) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (pub.userId !== user.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
+
     await this.publicationsRepository.update(id, {
       rented: false,
     });

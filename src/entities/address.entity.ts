@@ -1,4 +1,11 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Home } from './home.entity';
 
 @Entity('addresses')
@@ -31,10 +38,10 @@ export class Address {
   @Column({ nullable: true })
   ibge: string;
 
-  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',

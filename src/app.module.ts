@@ -7,14 +7,15 @@ import { Connection } from 'typeorm';
 import { getDB } from './config/ormconfig';
 import { SeedingModule } from './config/seed.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { LinkModule } from './modules/link.module';
 
 @Module({
   imports: [
-    ImagesModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(getDB()),
     SeedingModule,
     AuthModule,
+    LinkModule,
   ],
   providers: [
     {

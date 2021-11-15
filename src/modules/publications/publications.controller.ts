@@ -5,7 +5,9 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { Publication } from 'src/entities/publication.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -19,8 +21,8 @@ export class PublicationController implements IPublicationsController {
   constructor(private publicationService: PublicationsService) {}
 
   @Get()
-  async getPublications(): Promise<Publication[]> {
-    return await this.publicationService.findAll();
+  async getPublications(@Query('page') page: number): Promise<Publication[]> {
+    return await this.publicationService.findAll(page);
   }
 
   @Get(':id')
@@ -42,19 +44,26 @@ export class PublicationController implements IPublicationsController {
   async update(
     @Param('id') id: string,
     data: UpdatePublicationDTO,
+    @Request() req: any,
   ): Promise<Publication> {
-    return await this.publicationService.update(id, data);
+    return await this.publicationService.update(id, data, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async deactivate(@Param('id') id: string): Promise<void> {
-    return await this.publicationService.deactivate(id);
+  async deactivate(
+    @Param('id') id: string,
+    @Request() req: any,
+  ): Promise<void> {
+    return await this.publicationService.deactivate(id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/activate')
-  async activate(@Param('id') id: string): Promise<Publication> {
-    return await this.publicationService.activate(id);
+  async activate(
+    @Param('id') id: string,
+    @Request() req: any,
+  ): Promise<Publication> {
+    return await this.publicationService.activate(id, req.user);
   }
 }

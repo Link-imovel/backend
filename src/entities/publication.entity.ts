@@ -4,6 +4,8 @@ import {
   OneToOne,
   ManyToOne,
   PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Home } from './home.entity';
 import { User } from './user.entity';
@@ -36,10 +38,10 @@ export class Publication {
   @Column({ nullable: true })
   rented: boolean;
 
-  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',

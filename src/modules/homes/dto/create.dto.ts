@@ -77,7 +77,7 @@ export class CreateHomeDTO implements CreateHome {
   @IsNotEmpty()
   readonly address: CreateAddressDTO;
 
-  @ApiProperty({ type: () => CreateImageDTO, required: true })
+  @ApiProperty({ type: () => CreateImageDTO, required: false })
   @IsNotEmpty()
   @IsOptional()
   readonly images: CreateImageDTO | CreateImageDTO[];
