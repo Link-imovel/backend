@@ -28,7 +28,7 @@ export class AuthService {
     const userData = await this.usersService.findByEmail(user.email);
 
     if (userData.id) {
-      const payload = { username: userData.email, sub: userData.id };
+      const payload = { email: userData.email, sub: userData.id };
       const token = this.jwtService.sign(payload);
       this.tokenService.saveToken(token, userData.id);
       return {

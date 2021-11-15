@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import CreateUserDTO from './dto/create.dto';
@@ -27,7 +26,6 @@ export class UserController implements IUserController {
     private authService: AuthService,
   ) {}
 
-  @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() data: LoginUserDTO): Promise<LoginResponse> {
     return this.authService.login(data);

@@ -2,7 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -17,7 +17,7 @@ export class Token {
   hash: string;
 
   @Column('uuid')
-  @ManyToOne(() => User, (user) => user.id)
+  @OneToOne(() => User, (user) => user.id)
   userId: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
