@@ -7,6 +7,7 @@ import {
   Patch,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -41,8 +42,9 @@ export class UserController implements IUserController {
   async update(
     @Param('id') id: string,
     @Body() data: UpdateUserDTO,
+    @Request() req: any,
   ): Promise<User> {
-    return await this.userService.update(id, data);
+    return await this.userService.update(id, data, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -56,8 +58,8 @@ export class UserController implements IUserController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getUser(@Param('id') id: string): Promise<User> {
-    return await this.userService.find(id);
+  async getUser(@Param('id') id: string, @Request() req: any): Promise<User> {
+    return await this.userService.find(id, req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -68,13 +70,16 @@ export class UserController implements IUserController {
 
   @UseGuards(JwtAuthGuard)
   @Delete()
-  async setInactive(@Param('id') id: string): Promise<void> {
+  async setInactive(
+    @Param('id') id: string,
+    @Request() req: any,
+  ): Promise<void> {
     this.userService.deactivate(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('activate')
-  async setActive(@Param('id') id: string): Promise<void> {
+  async setActive(@Param('id') id: string, @Request() req: any): Promise<void> {
     this.userService.activate(id);
   }
 }

@@ -48,6 +48,9 @@ export class UsersService implements IUserService {
       user[val] = data[val];
     });
 
+    user.createdAt = new Date();
+    user.updatedAt = new Date();
+
     user.permissionLevel = permissionLevel;
 
     user.password = bcrypt.hashSync(data.password, 8);
@@ -55,15 +58,24 @@ export class UsersService implements IUserService {
     return await this.usersRepository.findOne({ id: user.id });
   }
 
-  async update(id: string, data: UpdateUserDTO): Promise<User> {
+  async update(id: string, data: UpdateUserDTO, userId: any): Promise<User> {
     const user = await this.usersRepository.findOne(id);
+
+    if (user.id !== userId) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
     await this.usersRepository.update(user, { ...user, ...data });
     return this.usersRepository.findOne(id);
   }
 
   setPassword: (id: string, data: UpdatePasswordUserDTO) => Promise<User>;
 
-  async find(id: string): Promise<User> {
+  async find(id: string, userId?: any): Promise<User> {
+    const user = await this.usersRepository.findOne(id);
+
+    if (user.id !== userId) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
     return this.usersRepository.findOne(id);
   }
 

@@ -8,12 +8,12 @@ import { User } from 'src/entities/user.entity';
 interface IUserController {
   login: (data: LoginUserDTO) => Promise<LoginResponse>;
   create: (data: CreateUserDTO) => Promise<User>;
-  update: (id: string, data: UpdateUserDTO) => Promise<User>;
+  update: (id: string, data: UpdateUserDTO, req: any) => Promise<User>;
   updatePassword: (id: string, data: UpdatePasswordUserDTO) => unknown;
-  getUser: (id: string) => Promise<User>;
+  getUser: (id: string, req: any) => Promise<User>;
   getUsers: () => Promise<User[]>;
-  setInactive: (id: string) => unknown;
-  setActive: (id: string) => unknown;
+  setInactive: (id: string, req: any) => unknown;
+  setActive: (id: string, req: any) => unknown;
 }
 
 export type { IUserController };
