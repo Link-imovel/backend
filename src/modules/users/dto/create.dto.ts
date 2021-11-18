@@ -48,6 +48,11 @@ export class CreateUserDTO implements CreateUser {
   @IsDate()
   @IsNotEmpty()
   readonly birthday: Date;
+
+  @ApiProperty({ type: String, required: true, example: 'user' })
+  @IsString()
+  @IsNotEmpty()
+  readonly permissionLevel: string;
 }
 
 export default CreateUserDTO;

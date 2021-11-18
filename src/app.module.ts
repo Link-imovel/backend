@@ -1,4 +1,3 @@
-import { ImagesModule } from './modules/images/images.module';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';

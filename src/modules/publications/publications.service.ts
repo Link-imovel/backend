@@ -1,5 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Permission } from 'src/entities/permissions.entity';
 import { Repository } from 'typeorm';
 import { Publication } from '../../entities/publication.entity';
 import { HomesService } from '../homes/homes.service';
@@ -13,6 +14,8 @@ export class PublicationsService implements IPublicationsService {
     @InjectRepository(Publication)
     private publicationsRepository: Repository<Publication>,
     private homesService: HomesService,
+    @InjectRepository(Permission)
+    private permissionRepository: Repository<Permission>,
   ) {}
 
   async findAll(page?: number): Promise<Publication[]> {
@@ -57,28 +60,37 @@ export class PublicationsService implements IPublicationsService {
     user: any,
   ): Promise<Publication> {
     const pub = await this.publicationsRepository.findOne(id);
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
+
     if (!pub) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
-    if (pub.userId !== user.id) {
+    if (pub.userId !== user.id && user.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 
     await this.homesService.update(pub.homeId, data.home);
     const newData = { ...pub, ...data };
+
+    delete newData.home;
     await this.publicationsRepository.update(id, newData as any);
     return await this.publicationsRepository.findOne(id);
   }
 
   async deactivate(id: string, user: any): Promise<void> {
     const pub = await this.publicationsRepository.findOne(id);
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
 
     if (!pub) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
-    if (pub.userId !== user.id) {
+    if (pub.userId !== user.id && user.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 
@@ -89,12 +101,15 @@ export class PublicationsService implements IPublicationsService {
 
   async activate(id: string, user: any): Promise<Publication> {
     const pub = await this.publicationsRepository.findOne(id);
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
 
     if (!pub) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
-    if (pub.userId !== user.id) {
+    if (pub.userId !== user.id && user.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 

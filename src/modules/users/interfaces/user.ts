@@ -8,6 +8,7 @@ interface CreateUser {
   registry: string;
   creci: string;
   birthday: Date;
+  permissionLevel: string;
 }
 
 interface LoginUser {
