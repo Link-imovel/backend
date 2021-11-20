@@ -51,6 +51,9 @@ export class User {
   @OneToOne(() => Permission)
   permissionLevel: string;
 
+  @Column()
+  isActive: boolean;
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 

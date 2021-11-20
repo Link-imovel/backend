@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { CreateUser } from '../interfaces/user';
 
 export class CreateUserDTO implements CreateUser {
@@ -53,6 +59,11 @@ export class CreateUserDTO implements CreateUser {
   @IsString()
   @IsNotEmpty()
   readonly permissionLevel: string;
+
+  @ApiProperty({ type: Boolean, required: true, example: false })
+  @IsBoolean()
+  @IsNotEmpty()
+  readonly isActivate: boolean;
 }
 
 export default CreateUserDTO;

@@ -9,6 +9,7 @@ interface CreateUser {
   creci: string;
   birthday: Date;
   permissionLevel: string;
+  isActivate: boolean;
 }
 
 interface LoginUser {

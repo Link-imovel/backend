@@ -4,12 +4,12 @@ import { SendEmailDTO } from './dto/create.dto';
 import * as sgMail from '@sendgrid/mail';
 import { IEmailService } from './interfaces/email.service';
 
-sgMail.setApiKey(
-  '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',
-);
-
 @Injectable()
 export class EmailsService implements IEmailService {
+  constructor() {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  }
+
   async sendEmail(data: SendEmailDTO): Promise<void> {
     await sgMail.send({
       to: data.email,

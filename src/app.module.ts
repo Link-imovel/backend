@@ -10,7 +10,7 @@ import { LinkModule } from './modules/link.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(getDB()),
     SeedingModule,
     AuthModule,
