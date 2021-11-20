@@ -24,6 +24,9 @@ export class Publication {
   @Column()
   homeId: string;
 
+  @Column()
+  title: string;
+
   @Column({ nullable: true })
   phone: string;
 

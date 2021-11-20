@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Publication } from '../../entities/publication.entity';
 import { HomesService } from '../homes/homes.service';
 import CreatePublicationDTO from './dto/create.dto';
@@ -15,9 +15,53 @@ export class PublicationsService implements IPublicationsService {
     private homesService: HomesService,
   ) {}
 
-  async findAll(page?: number): Promise<Publication[]> {
+  async findAll(page?: number, searchText?: string): Promise<Publication[]> {
     const take = page ? page * 10 : 10;
     const skip = page ? page - 1 * take : 0;
+    const commonCodition = { rented: false };
+
+    if (searchText) {
+      return await this.publicationsRepository.find({
+        relations: ['home', 'home.address'],
+        where: [
+          { title: Like(searchText + '%'), ...commonCodition },
+          {
+            home: {
+              address: {
+                street: Like(searchText + '%'),
+                ...commonCodition,
+              },
+            },
+          },
+          {
+            home: {
+              address: {
+                zip: Like(searchText + '%'),
+                ...commonCodition,
+              },
+            },
+          },
+          {
+            home: {
+              address: {
+                state: Like(searchText + '%'),
+                ...commonCodition,
+              },
+            },
+          },
+          {
+            home: {
+              address: {
+                city: Like(searchText + '%'),
+                ...commonCodition,
+              },
+            },
+          },
+        ],
+        take,
+        skip,
+      });
+    }
 
     return await this.publicationsRepository.find({
       where: { rented: false },

@@ -23,6 +23,10 @@ export class Publications1634514847355 implements MigrationInterface {
             type: 'uuid',
           },
           {
+            name: 'title',
+            type: 'varchar',
+          },
+          {
             name: 'phone',
             type: 'varchar',
             isNullable: true,

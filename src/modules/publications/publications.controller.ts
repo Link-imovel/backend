@@ -22,8 +22,11 @@ export class PublicationController implements IPublicationsController {
   constructor(private publicationService: PublicationsService) {}
 
   @Get()
-  async getPublications(@Query('page') page: number): Promise<Publication[]> {
-    return await this.publicationService.findAll(page);
+  async getPublications(
+    @Query('page') page: number,
+    @Query('text') searchText: string,
+  ): Promise<Publication[]> {
+    return await this.publicationService.findAll(page, searchText);
   }
 
   @Get(':id')

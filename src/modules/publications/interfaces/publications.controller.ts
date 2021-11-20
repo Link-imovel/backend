@@ -3,7 +3,10 @@ import CreatePublicationDTO from '../dto/create.dto';
 import UpdatePublicationDTO from '../dto/update.dto';
 
 interface IPublicationsController {
-  getPublications: (page?: number) => Promise<Publication[]>;
+  getPublications: (
+    page?: number,
+    searchText?: string,
+  ) => Promise<Publication[]>;
   getPublication: (id: string) => Promise<Publication>;
   create: (userId: string, data: CreatePublicationDTO) => Promise<Publication>;
   update: (
