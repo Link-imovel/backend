@@ -4,14 +4,14 @@ import UpdateUserDTO from '../dto/update.dto';
 import UpdatePasswordUserDTO from '../dto/updatePassword.dto';
 
 interface IUserService {
-  create: (data: CreateUserDTO) => Promise<User>;
-  update: (id: string, data: UpdateUserDTO) => Promise<User>;
+  create: (data: CreateUserDTO, userId: any) => Promise<User>;
+  update: (id: string, data: UpdateUserDTO, user: any) => Promise<User>;
   setPassword: (id: string, data: UpdatePasswordUserDTO) => Promise<User>;
-  find: (id: string) => Promise<User>;
+  find: (id: string, userId: any) => Promise<User>;
   findByEmail: (email: string) => Promise<User>;
-  findAll: () => Promise<User[]>;
-  deactivate: (id: string) => unknown;
-  activate: (id: string) => Promise<User>;
+  findAll: (user: any) => Promise<User[]>;
+  deactivate: (id: string, user: any) => unknown;
+  activate: (id: string, user: any) => Promise<User>;
 }
 
 export type { IUserService };

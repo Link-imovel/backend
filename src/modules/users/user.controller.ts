@@ -5,8 +5,8 @@ import {
   Post,
   Body,
   Patch,
-  Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -18,6 +18,7 @@ import { LoginResponse } from '../auth/interfaces/auth';
 import UpdatePasswordUserDTO from './dto/updatePassword.dto';
 import { User } from 'src/entities/user.entity';
 import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController implements IUserController {
@@ -26,14 +27,19 @@ export class UserController implements IUserController {
     private authService: AuthService,
   ) {}
 
+  @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() data: LoginUserDTO): Promise<LoginResponse> {
     return this.authService.login(data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() data: CreateUserDTO): Promise<User> {
-    return await this.userService.create(data);
+  async create(
+    @Body() data: CreateUserDTO,
+    @Request() req: any,
+  ): Promise<User> {
+    return await this.userService.create(data, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -41,8 +47,9 @@ export class UserController implements IUserController {
   async update(
     @Param('id') id: string,
     @Body() data: UpdateUserDTO,
+    @Request() req: any,
   ): Promise<User> {
-    return await this.userService.update(id, data);
+    return await this.userService.update(id, data, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -56,25 +63,28 @@ export class UserController implements IUserController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getUser(@Param('id') id: string): Promise<User> {
-    return await this.userService.find(id);
+  async getUser(@Param('id') id: string, @Request() req: any): Promise<User> {
+    return await this.userService.find(id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getUsers(): Promise<User[]> {
-    return await this.userService.findAll();
+  async getUsers(@Request() req: any): Promise<User[]> {
+    return await this.userService.findAll(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete()
-  async setInactive(@Param('id') id: string): Promise<void> {
-    this.userService.deactivate(id);
+  @Patch('deactivate')
+  async setInactive(
+    @Param('id') id: string,
+    @Request() req: any,
+  ): Promise<void> {
+    this.userService.deactivate(id, req.user.permissionLevel);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('activate')
-  async setActive(@Param('id') id: string): Promise<void> {
-    this.userService.activate(id);
+  @Patch('activate')
+  async setActive(@Param('id') id: string, @Request() req: any): Promise<User> {
+    return this.userService.activate(id, req.user.permissionLevel);
   }
 }

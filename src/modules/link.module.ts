@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AddressModule } from './addresses/addresses.module';
+import { EmailsModule } from './email/emails.module';
 import { HomeModule } from './homes/homes.module';
 import { ImagesModule } from './images/images.module';
 import { PublicationModule } from './publications/publications.module';
@@ -14,6 +15,7 @@ import { UsersModule } from './users/users.module';
     TokenModule,
     UsersModule,
     ImagesModule,
+    EmailsModule,
   ],
 })
 export class LinkModule {}

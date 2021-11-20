@@ -70,6 +70,11 @@ export class Users1634513130185 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'isActive',
+            type: 'boolean',
+            isNullable: true,
+          },
+          {
             name: 'createdAt',
             type: 'timestamptz',
             isNullable: true,

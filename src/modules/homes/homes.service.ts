@@ -66,7 +66,10 @@ export class HomesService implements IHomesService {
 
       const newData = { ...home, ...data };
 
-      await this.homesRepository.update(home, newData as any);
+      delete newData.address;
+      delete newData.images;
+
+      await this.homesRepository.update({ id }, newData as any);
       return this.homesRepository.findOne(id);
     }
 

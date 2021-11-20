@@ -31,9 +31,12 @@ export class ImagesService implements IImageService {
   async update(id: string, file: string): Promise<Image> {
     const image = await this.imageRepository.findOne(id);
     if (image) {
-      await this.imageRepository.update(id, {
-        image: Buffer.from(file, 'base64'),
-      });
+      await this.imageRepository.update(
+        { id },
+        {
+          image: Buffer.from(file, 'base64'),
+        },
+      );
       return await this.imageRepository.findOne(id);
     }
 

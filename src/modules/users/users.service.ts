@@ -20,7 +20,7 @@ export class UsersService implements IUserService {
     private permissionRepository: Repository<Permission>,
   ) {}
 
-  async create(data: CreateUserDTO): Promise<User> {
+  async create(data: CreateUserDTO, userId: any): Promise<User> {
     let user = await this.usersRepository.findOne({
       where: [
         {
@@ -32,6 +32,14 @@ export class UsersService implements IUserService {
       ],
     });
 
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
+
+    if (userId.permissionLevel !== permission.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
+
     if (user) {
       throw new HttpException(
         'User already exists',
@@ -41,12 +49,15 @@ export class UsersService implements IUserService {
 
     user = new User();
     const { id: permissionLevel } = await this.permissionRepository.findOne({
-      name: 'user',
+      name: data.permissionLevel,
     });
 
     Object.keys(data).map((val) => {
       user[val] = data[val];
     });
+
+    user.createdAt = new Date();
+    user.updatedAt = new Date();
 
     user.permissionLevel = permissionLevel;
 
@@ -55,15 +66,39 @@ export class UsersService implements IUserService {
     return await this.usersRepository.findOne({ id: user.id });
   }
 
-  async update(id: string, data: UpdateUserDTO): Promise<User> {
+  async update(id: string, data: UpdateUserDTO, userId: any): Promise<User> {
     const user = await this.usersRepository.findOne(id);
-    await this.usersRepository.update(user, { ...user, ...data });
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (user.id !== userId.id && userId.permissionLevel !== permission.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
+
+    await this.usersRepository.update({ id }, { ...data });
     return this.usersRepository.findOne(id);
   }
 
   setPassword: (id: string, data: UpdatePasswordUserDTO) => Promise<User>;
 
-  async find(id: string): Promise<User> {
+  async find(id: string, userId?: any): Promise<User> {
+    const user = await this.usersRepository.findOne(id);
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (user.id !== userId.id && userId.permissionLevel !== permission.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
     return this.usersRepository.findOne(id);
   }
 
@@ -71,17 +106,51 @@ export class UsersService implements IUserService {
     return this.usersRepository.findOne({ email });
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(userId?: any): Promise<User[]> {
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
+
+    if (userId.permissionLevel !== permission.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
     return await this.usersRepository.find();
   }
 
-  async deactivate(id: string): Promise<unknown> {
+  async deactivate(id: string, userId: any): Promise<unknown> {
     // @TODO: Deactivate method
+    const user = await this.usersRepository.findOne(id);
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (userId.permissionLevel !== permission.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
+
+    // await this.usersRepository.update(id, { status: 'ACTIVATE' });
     return this.usersRepository.findOne(id);
   }
 
-  async activate(id: string): Promise<User> {
+  async activate(id: string, userId: any): Promise<User> {
     // @TODO: Activate method
+    const user = await this.usersRepository.findOne(id);
+    const permission = await this.permissionRepository.findOne({
+      name: 'admin',
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (userId.permissionLevel !== permission.id) {
+      throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
+    }
+    // await this.usersRepository.update(id, { status: 'DEACTIVATE' });
     return this.usersRepository.findOne(id);
   }
 }

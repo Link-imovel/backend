@@ -15,18 +15,18 @@ export class UpdatePublicationDTO implements UpdatePublication {
   @IsBoolean()
   @IsNotEmpty()
   @IsOptional()
-  readonly reserved?: boolean;
+  readonly reserved: boolean;
 
   @ApiProperty({ type: Boolean, nullable: true })
   @IsNumber()
   @IsNotEmpty()
   @IsOptional()
-  readonly views?: number;
+  readonly views: number;
 
   @ApiProperty({ type: String, nullable: true })
   @IsString()
   @IsOptional()
-  readonly virtualTour?: string;
+  readonly virtualTour: string;
 
   @ApiProperty({ type: String, nullable: true })
   @IsString()
@@ -37,7 +37,7 @@ export class UpdatePublicationDTO implements UpdatePublication {
   @IsObject()
   @IsNotEmpty()
   @IsOptional()
-  readonly home?: UpdateHomeDTO;
+  readonly home: UpdateHomeDTO;
 }
 
 export default UpdatePublicationDTO;

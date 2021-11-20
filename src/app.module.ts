@@ -1,4 +1,3 @@
-import { ImagesModule } from './modules/images/images.module';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -11,7 +10,7 @@ import { LinkModule } from './modules/link.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(getDB()),
     SeedingModule,
     AuthModule,

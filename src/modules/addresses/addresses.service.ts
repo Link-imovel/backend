@@ -30,7 +30,7 @@ export class AddressesService implements IAdressesService {
       throw new HttpException('Address not found', HttpStatus.NOT_FOUND);
     }
 
-    await this.addressesRepository.update(address, data);
+    await this.addressesRepository.update({ id }, data);
     return this.addressesRepository.findOne(id);
   }
 

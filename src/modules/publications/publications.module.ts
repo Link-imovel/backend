@@ -1,5 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Permission } from 'src/entities/permissions.entity';
 import { Publication } from 'src/entities/publication.entity';
 import { AuthModule } from '../auth/auth.module';
 import { HomeModule } from '../homes/homes.module';
@@ -8,7 +9,7 @@ import { PublicationsService } from './publications.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Publication]),
+    TypeOrmModule.forFeature([Publication, Permission]),
     forwardRef(() => AuthModule),
     HomeModule,
   ],
