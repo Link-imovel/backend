@@ -21,18 +21,18 @@ export class PublicationsService implements IPublicationsService {
   async findAll(page?: number, searchText?: string): Promise<Publication[]> {
     const take = page ? page * 10 : 10;
     const skip = page ? page - 1 * take : 0;
-    const commonCodition = { rented: false };
+    const commonCondition = { rented: false };
 
     if (searchText) {
       return await this.publicationsRepository.find({
         relations: ['home', 'home.address'],
         where: [
-          { title: Like(searchText + '%'), ...commonCodition },
+          { title: Like(searchText + '%'), ...commonCondition },
           {
             home: {
               address: {
                 street: Like(searchText + '%'),
-                ...commonCodition,
+                ...commonCondition,
               },
             },
           },
@@ -40,7 +40,7 @@ export class PublicationsService implements IPublicationsService {
             home: {
               address: {
                 zip: Like(searchText + '%'),
-                ...commonCodition,
+                ...commonCondition,
               },
             },
           },
@@ -48,7 +48,7 @@ export class PublicationsService implements IPublicationsService {
             home: {
               address: {
                 state: Like(searchText + '%'),
-                ...commonCodition,
+                ...commonCondition,
               },
             },
           },
@@ -56,7 +56,7 @@ export class PublicationsService implements IPublicationsService {
             home: {
               address: {
                 city: Like(searchText + '%'),
-                ...commonCodition,
+                ...commonCondition,
               },
             },
           },

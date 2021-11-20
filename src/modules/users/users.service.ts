@@ -56,6 +56,7 @@ export class UsersService implements IUserService {
       user[val] = data[val];
     });
 
+    user.isActive = true;
     user.createdAt = new Date();
     user.updatedAt = new Date();
 
@@ -87,7 +88,11 @@ export class UsersService implements IUserService {
   setPassword: (id: string, data: UpdatePasswordUserDTO) => Promise<User>;
 
   async find(id: string, userId?: any): Promise<User> {
-    const user = await this.usersRepository.findOne(id);
+    const user = await this.usersRepository.findOne(id, {
+      where: {
+        isActive: true,
+      },
+    });
     const permission = await this.permissionRepository.findOne({
       name: 'admin',
     });
@@ -103,7 +108,14 @@ export class UsersService implements IUserService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return this.usersRepository.findOne({ email });
+    return this.usersRepository.findOne(
+      { email },
+      {
+        where: {
+          isActive: true,
+        },
+      },
+    );
   }
 
   async findAll(userId?: any): Promise<User[]> {
@@ -118,7 +130,6 @@ export class UsersService implements IUserService {
   }
 
   async deactivate(id: string, userId: any): Promise<unknown> {
-    // @TODO: Deactivate method
     const user = await this.usersRepository.findOne(id);
     const permission = await this.permissionRepository.findOne({
       name: 'admin',
@@ -132,12 +143,11 @@ export class UsersService implements IUserService {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 
-    // await this.usersRepository.update(id, { status: 'ACTIVATE' });
+    await this.usersRepository.update(id, { isActive: false });
     return this.usersRepository.findOne(id);
   }
 
   async activate(id: string, userId: any): Promise<User> {
-    // @TODO: Activate method
     const user = await this.usersRepository.findOne(id);
     const permission = await this.permissionRepository.findOne({
       name: 'admin',
@@ -150,7 +160,8 @@ export class UsersService implements IUserService {
     if (userId.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
-    // await this.usersRepository.update(id, { status: 'DEACTIVATE' });
+
+    await this.usersRepository.update(id, { isActive: true });
     return this.usersRepository.findOne(id);
   }
 }

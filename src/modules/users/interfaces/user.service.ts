@@ -10,8 +10,8 @@ interface IUserService {
   find: (id: string, userId: any) => Promise<User>;
   findByEmail: (email: string) => Promise<User>;
   findAll: (user: any) => Promise<User[]>;
-  deactivate: (id: string, user: any) => unknown;
-  activate: (id: string, user: any) => Promise<User>;
+  deactivate: (id: string, userId: any) => unknown;
+  activate: (id: string, userId: any) => Promise<User>;
 }
 
 export type { IUserService };

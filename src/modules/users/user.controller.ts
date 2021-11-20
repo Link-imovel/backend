@@ -74,17 +74,17 @@ export class UserController implements IUserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('deactivate')
+  @Patch(':id/deactivate')
   async setInactive(
     @Param('id') id: string,
     @Request() req: any,
   ): Promise<void> {
-    this.userService.deactivate(id, req.user.permissionLevel);
+    this.userService.deactivate(id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('activate')
+  @Patch(':id/activate')
   async setActive(@Param('id') id: string, @Request() req: any): Promise<User> {
-    return this.userService.activate(id, req.user.permissionLevel);
+    return this.userService.activate(id, req.user);
   }
 }
