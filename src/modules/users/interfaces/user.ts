@@ -2,7 +2,6 @@ interface CreateUser {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
   phone: string;
   mobile: string;
   registry: string;
@@ -26,7 +25,9 @@ interface ResetPasswordUser {
   email: string;
 }
 
-type UpdateUser = Partial<CreateUser>;
+interface UpdateUser extends Partial<CreateUser> {
+  password?: string;
+}
 
 export type {
   CreateUser,

@@ -42,7 +42,10 @@ export class UsersService implements IUserService {
       name: 'admin',
     });
 
-    if (reqUser.permissionLevel !== permission.id) {
+    if (
+      reqUser?.permissionLevel !== permission?.id &&
+      data.permissionLevel !== permission.id
+    ) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 
@@ -55,7 +58,7 @@ export class UsersService implements IUserService {
 
     user = new User();
     const { id: permissionLevel } = await this.permissionRepository.findOne({
-      name: data.permissionLevel,
+      name: 'user',
     });
 
     Object.keys(data).map((val) => {
@@ -67,8 +70,10 @@ export class UsersService implements IUserService {
     user.updatedAt = new Date();
 
     user.permissionLevel = permissionLevel;
-
-    user.password = bcrypt.hashSync(data.password, 8);
+    user.password = bcrypt.hashSync(
+      (Math.random() + 1).toString(36).substring(7),
+      8,
+    );
     user = await this.usersRepository.save(user);
 
     const tokens = new PasswordTokens();

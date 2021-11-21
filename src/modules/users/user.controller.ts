@@ -34,7 +34,6 @@ export class UserController implements IUserController {
     return this.authService.login(data);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(
     @Body() data: CreateUserDTO,

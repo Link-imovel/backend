@@ -24,11 +24,6 @@ export class CreateUserDTO implements CreateUser {
   @IsNotEmpty()
   readonly email: string;
 
-  @ApiProperty({ type: String, required: true, example: 'password' })
-  @IsString()
-  @IsNotEmpty()
-  readonly password: string;
-
   @ApiProperty({ type: String, required: true, example: '+55 (41) 99999-9999' })
   @IsString()
   @IsNotEmpty()
@@ -58,6 +53,7 @@ export class CreateUserDTO implements CreateUser {
   @ApiProperty({ type: String, required: true, example: 'user' })
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   readonly permissionLevel: string;
 
   @ApiProperty({ type: Boolean, required: true, example: false })

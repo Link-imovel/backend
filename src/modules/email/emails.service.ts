@@ -7,7 +7,8 @@ import { IEmailService } from './interfaces/email.service';
 @Injectable()
 export class EmailsService implements IEmailService {
   constructor() {
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const apiKey = process.env.SENDGRID_API_KEY;
+    sgMail.setApiKey(apiKey);
   }
 
   async sendEmail(
