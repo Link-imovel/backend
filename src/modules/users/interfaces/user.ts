@@ -22,6 +22,16 @@ interface UpdatePasswordUser {
   confirmPassword: string;
 }
 
+interface ResetPasswordUser {
+  email: string;
+}
+
 type UpdateUser = Partial<CreateUser>;
 
-export type { CreateUser, UpdateUser, LoginUser, UpdatePasswordUser };
+export type {
+  CreateUser,
+  UpdateUser,
+  LoginUser,
+  UpdatePasswordUser,
+  ResetPasswordUser,
+};

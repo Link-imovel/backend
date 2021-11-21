@@ -7,6 +7,9 @@ import { User } from '../../entities/user.entity';
 import CreateUserDTO from './dto/create.dto';
 import UpdateUserDTO from './dto/update.dto';
 import UpdatePasswordUserDTO from './dto/updatePassword.dto';
+import ResetPasswordUserDTO from './dto/resetPassword.dto';
+import { PasswordTokens } from 'src/entities/password_tokens.entity';
+import { EmailsService } from 'src/modules/email/emails.service';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
@@ -18,9 +21,12 @@ export class UsersService implements IUserService {
     private usersRepository: Repository<User>,
     @InjectRepository(Permission)
     private permissionRepository: Repository<Permission>,
+    @InjectRepository(PasswordTokens)
+    private tokensRepository: Repository<PasswordTokens>,
+    private emailService: EmailsService,
   ) {}
 
-  async create(data: CreateUserDTO, userId: any): Promise<User> {
+  async create(data: CreateUserDTO, reqUser: User): Promise<void> {
     let user = await this.usersRepository.findOne({
       where: [
         {
@@ -36,7 +42,7 @@ export class UsersService implements IUserService {
       name: 'admin',
     });
 
-    if (userId.permissionLevel !== permission.id) {
+    if (reqUser.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 
@@ -56,7 +62,7 @@ export class UsersService implements IUserService {
       user[val] = data[val];
     });
 
-    user.isActive = true;
+    user.isActive = false;
     user.createdAt = new Date();
     user.updatedAt = new Date();
 
@@ -64,10 +70,24 @@ export class UsersService implements IUserService {
 
     user.password = bcrypt.hashSync(data.password, 8);
     user = await this.usersRepository.save(user);
-    return await this.usersRepository.findOne({ id: user.id });
+
+    const tokens = new PasswordTokens();
+    tokens.userId = user.id;
+    tokens.expiredAt = new Date(Date.now() + 3 * 3600 * 1000);
+
+    const { id: tokenId } = await this.tokensRepository.save(tokens);
+    this.emailService.sendEmail(
+      user.email,
+      `${user.firstName}, Bem-vindo a link_`,
+      'createAccount',
+      {
+        firstName: user.firstName,
+        passwordLink: process.env.HOST_URL + 'set-password?token=' + tokenId,
+      },
+    );
   }
 
-  async update(id: string, data: UpdateUserDTO, userId: any): Promise<User> {
+  async update(id: string, data: UpdateUserDTO, reqUser: User): Promise<User> {
     const user = await this.usersRepository.findOne(id);
     const permission = await this.permissionRepository.findOne({
       name: 'admin',
@@ -77,7 +97,7 @@ export class UsersService implements IUserService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    if (user.id !== userId.id && userId.permissionLevel !== permission.id) {
+    if (user.id !== reqUser.id && reqUser.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 
@@ -85,9 +105,56 @@ export class UsersService implements IUserService {
     return this.usersRepository.findOne(id);
   }
 
-  setPassword: (id: string, data: UpdatePasswordUserDTO) => Promise<User>;
+  async setPassword(token: string, data: UpdatePasswordUserDTO): Promise<User> {
+    const { userId, expiredAt } = await this.tokensRepository.findOne({
+      id: token,
+    });
 
-  async find(id: string, userId?: any): Promise<User> {
+    if (data.confirmPassword !== data.password) {
+      throw new HttpException(
+        'Passwords does not match.',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    if (new Date() > new Date(expiredAt)) {
+      throw new HttpException(
+        'Invalid token provided.',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    const user = await this.usersRepository.findOne({ id: userId });
+    if (!user) {
+      throw new HttpException('User could not be found', HttpStatus.NOT_FOUND);
+    }
+
+    await this.usersRepository.update(
+      { id: userId },
+      { ...user, password: bcrypt.hashSync(data.password, 8) },
+    );
+
+    return user;
+  }
+
+  async resetPassword(data: ResetPasswordUserDTO): Promise<void> {
+    const user = await this.findByEmail(data.email);
+    const tokens = new PasswordTokens();
+    tokens.userId = user.id;
+    tokens.expiredAt = new Date(Date.now() + 3 * 3600 * 1000);
+    const { id: tokenId } = await this.tokensRepository.save(tokens);
+    this.emailService.sendEmail(
+      data.email,
+      'Resetar a senha - LINK_',
+      'resetPwd',
+      {
+        firstName: user.firstName,
+        passwordLink: process.env.HOST_URL + 'set-password?token=' + tokenId,
+      },
+    );
+  }
+
+  async find(id: string, reqUser?: User): Promise<User> {
     const user = await this.usersRepository.findOne(id, {
       where: {
         isActive: true,
@@ -101,7 +168,7 @@ export class UsersService implements IUserService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    if (user.id !== userId.id && userId.permissionLevel !== permission.id) {
+    if (user.id !== reqUser.id && reqUser.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
     return this.usersRepository.findOne(id);
@@ -118,18 +185,18 @@ export class UsersService implements IUserService {
     );
   }
 
-  async findAll(userId?: any): Promise<User[]> {
+  async findAll(reqUser: User): Promise<User[]> {
     const permission = await this.permissionRepository.findOne({
       name: 'admin',
     });
 
-    if (userId.permissionLevel !== permission.id) {
+    if (reqUser.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
     return await this.usersRepository.find();
   }
 
-  async deactivate(id: string, userId: any): Promise<unknown> {
+  async deactivate(id: string, reqUser: User): Promise<unknown> {
     const user = await this.usersRepository.findOne(id);
     const permission = await this.permissionRepository.findOne({
       name: 'admin',
@@ -139,7 +206,7 @@ export class UsersService implements IUserService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    if (userId.permissionLevel !== permission.id) {
+    if (reqUser.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 
@@ -147,7 +214,7 @@ export class UsersService implements IUserService {
     return this.usersRepository.findOne(id);
   }
 
-  async activate(id: string, userId: any): Promise<User> {
+  async activate(id: string, reqUser: User): Promise<User> {
     const user = await this.usersRepository.findOne(id);
     const permission = await this.permissionRepository.findOne({
       name: 'admin',
@@ -157,7 +224,7 @@ export class UsersService implements IUserService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    if (userId.permissionLevel !== permission.id) {
+    if (reqUser.permissionLevel !== permission.id) {
       throw new HttpException('Not allowed', HttpStatus.UNAUTHORIZED);
     }
 

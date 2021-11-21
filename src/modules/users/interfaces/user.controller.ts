@@ -4,12 +4,14 @@ import UpdateUserDTO from '../dto/update.dto';
 import UpdatePasswordUserDTO from '../dto/updatePassword.dto';
 import { LoginResponse } from 'src/modules/auth/interfaces/auth';
 import { User } from 'src/entities/user.entity';
+import ResetPasswordUserDTO from '../dto/resetPassword.dto';
 
 interface IUserController {
   login: (data: LoginUserDTO) => Promise<LoginResponse>;
-  create: (data: CreateUserDTO, req: any) => Promise<User>;
+  create: (data: CreateUserDTO, req: any) => Promise<void>;
   update: (id: string, data: UpdateUserDTO, req: any) => Promise<User>;
-  updatePassword: (id: string, data: UpdatePasswordUserDTO) => unknown;
+  updatePassword: (id: string, data: UpdatePasswordUserDTO) => Promise<User>;
+  resetPassword: (data: ResetPasswordUserDTO) => Promise<void>;
   getUser: (id: string, req: any) => Promise<User>;
   getUsers: (req: any) => Promise<User[]>;
   setInactive: (id: string, req: any) => unknown;

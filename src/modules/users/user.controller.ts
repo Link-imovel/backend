@@ -19,6 +19,7 @@ import UpdatePasswordUserDTO from './dto/updatePassword.dto';
 import { User } from 'src/entities/user.entity';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
+import ResetPasswordUserDTO from './dto/resetPassword.dto';
 
 @Controller('user')
 export class UserController implements IUserController {
@@ -38,7 +39,7 @@ export class UserController implements IUserController {
   async create(
     @Body() data: CreateUserDTO,
     @Request() req: any,
-  ): Promise<User> {
+  ): Promise<void> {
     return await this.userService.create(data, req.user);
   }
 
@@ -52,13 +53,17 @@ export class UserController implements IUserController {
     return await this.userService.update(id, data, req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Patch('password/:id')
+  @Patch('password/:token')
   async updatePassword(
-    @Param('id') id: string,
+    @Param('token') token: string,
     @Body() data: UpdatePasswordUserDTO,
   ): Promise<User> {
-    return await this.userService.setPassword(id, data);
+    return await this.userService.setPassword(token, data);
+  }
+
+  @Patch('password/reset')
+  async resetPassword(@Body() data: ResetPasswordUserDTO): Promise<void> {
+    return await this.userService.resetPassword(data);
   }
 
   @UseGuards(JwtAuthGuard)

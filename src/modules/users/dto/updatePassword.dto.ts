@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { UpdatePasswordUser } from '../interfaces/user';
 
 export class UpdatePasswordUserDTO implements UpdatePasswordUser {
-  @ApiProperty({ type: String, required: true, example: 'login@link.com' })
+  @ApiProperty({ type: String, required: true, example: 'senha123' })
   @IsString()
   @IsNotEmpty()
   readonly password: string;
