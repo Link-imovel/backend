@@ -130,13 +130,24 @@ export class UsersService implements IUserService {
     }
 
     const user = await this.usersRepository.findOne({ id: userId });
+
     if (!user) {
       throw new HttpException('User could not be found', HttpStatus.NOT_FOUND);
     }
 
     await this.usersRepository.update(
       { id: userId },
-      { ...user, password: bcrypt.hashSync(data.password, 8) },
+      {
+        password: bcrypt.hashSync(data.password, 8),
+        isActive: true,
+      },
+    );
+
+    await this.tokensRepository.update(
+      {
+        id: token,
+      },
+      { expiredAt: new Date() },
     );
 
     return user;

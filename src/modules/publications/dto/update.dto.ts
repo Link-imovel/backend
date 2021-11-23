@@ -11,6 +11,11 @@ import UpdateHomeDTO from 'src/modules/homes/dto/update.dto';
 import { UpdatePublication } from '../interfaces/publication';
 
 export class UpdatePublicationDTO implements UpdatePublication {
+  @ApiProperty({ type: String, nullable: true })
+  @IsString()
+  @IsOptional()
+  readonly title: string;
+
   @ApiProperty({ type: Boolean, nullable: true })
   @IsBoolean()
   @IsNotEmpty()

@@ -20,7 +20,7 @@ export class PublicationsService implements IPublicationsService {
 
   async findAll(page?: number, searchText?: string): Promise<Publication[]> {
     const take = page ? page * 10 : 10;
-    const skip = page ? page - 1 * take : 0;
+    const skip = page > 1 ? page - 1 * take : undefined;
     const commonCondition = { rented: false };
 
     if (searchText) {
@@ -87,6 +87,7 @@ export class PublicationsService implements IPublicationsService {
   ): Promise<Publication> {
     const home = await this.homesService.create(data.home);
     const pub = new Publication();
+    pub.title = data.title;
     pub.phone = data.phone;
     pub.virtualTour = data.virtualTour;
     pub.views = 0;

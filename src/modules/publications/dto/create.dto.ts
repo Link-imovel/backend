@@ -10,6 +10,10 @@ export class CreatePublicationDTO implements CreatePublication {
 
   @ApiProperty({ type: String, nullable: true })
   @IsString()
+  readonly title: string;
+
+  @ApiProperty({ type: String, nullable: true })
+  @IsString()
   @IsOptional()
   readonly virtualTour?: string;
 
