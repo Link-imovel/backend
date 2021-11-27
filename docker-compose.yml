@@ -22,9 +22,11 @@ services:
       - postgres
 
   postgres:
-    image: postgres:13
+    image: kartoza/postgis:latest
     container_name: postgres
-    restart: always
+    restart: on-failure
+    healthcheck:
+      test: "exit 0"
     environment:
       POSTGRES_USER: link
       POSTGRES_PASSWORD: knil

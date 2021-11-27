@@ -2,7 +2,7 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class Address1634514823330 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS postgis');
+    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "postgis"`);
     await queryRunner.createTable(
       new Table({
         name: 'addresses',

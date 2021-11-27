@@ -26,12 +26,12 @@ export class Homes1634513819676 implements MigrationInterface {
           },
           {
             name: 'totalArea',
-            type: 'string',
+            type: 'varchar',
             isNullable: true,
           },
           {
             name: 'value',
-            type: 'string',
+            type: 'varchar',
             isNullable: false,
           },
           {
