@@ -12,9 +12,9 @@ import { IHomesService } from './interfaces/homes.service';
 export class HomesService implements IHomesService {
   constructor(
     @InjectRepository(Home)
-    private homesRepository: Repository<Home>,
-    private addressesService: AddressesService,
-    private imagesService: ImagesService,
+    private readonly homesRepository: Repository<Home>,
+    private readonly addressesService: AddressesService,
+    private readonly imagesService: ImagesService,
   ) {}
 
   async create(data: CreateHomeDTO): Promise<Home> {

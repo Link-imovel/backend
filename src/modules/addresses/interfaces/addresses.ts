@@ -7,6 +7,8 @@ interface CreateAddress {
   ibge: string;
   neighborhood: string;
   number: number;
+  latitude: number;
+  longitude: number;
   zip: string;
 }
 

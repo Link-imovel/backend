@@ -5,21 +5,30 @@ import { Address } from '../../entities/address.entity';
 import CreateAddressDTO from './dto/create.dto';
 import UpdateAddressDTO from './dto/update.dto';
 import { IAdressesService } from './interfaces/addresses.service';
+import { Point } from 'geojson';
 
 @Injectable()
 export class AddressesService implements IAdressesService {
   constructor(
     @InjectRepository(Address)
-    private addressesRepository: Repository<Address>,
+    private readonly addressesRepository: Repository<Address>,
   ) {}
 
   async create(data: CreateAddressDTO): Promise<Address> {
     let address = new Address();
+
+    const location: Point = {
+      type: 'Point',
+      coordinates: [data?.longitude, data?.latitude],
+    };
+
     address = {
       ...data,
+      location,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
     address = await this.addressesRepository.save(address);
     return await this.addressesRepository.findOne(address.id);
   }

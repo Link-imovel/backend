@@ -18,12 +18,12 @@ const bcrypt = require('bcrypt');
 export class UsersService implements IUserService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private readonly usersRepository: Repository<User>,
     @InjectRepository(Permission)
-    private permissionRepository: Repository<Permission>,
+    private readonly permissionRepository: Repository<Permission>,
     @InjectRepository(PasswordTokens)
-    private tokensRepository: Repository<PasswordTokens>,
-    private emailService: EmailsService,
+    private readonly tokensRepository: Repository<PasswordTokens>,
+    private readonly emailService: EmailsService,
   ) {}
 
   async create(data: CreateUserDTO, reqUser: User): Promise<void> {

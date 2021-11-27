@@ -5,7 +5,16 @@ import UpdatePublicationDTO from '../dto/update.dto';
 interface IPublicationsController {
   getPublications: (
     page?: number,
-    searchText?: string,
+    text?: string,
+    state?: string,
+    zip?: string,
+    garage?: string,
+    bedroom?: string,
+    bathroom?: string,
+    kitchen?: string,
+    value?: string,
+    latitude?: string,
+    longitude?: string,
   ) => Promise<Publication[]>;
   getPublication: (id: string) => Promise<Publication>;
   create: (userId: string, data: CreatePublicationDTO) => Promise<Publication>;

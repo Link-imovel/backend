@@ -40,6 +40,16 @@ export class CreateAddressDTO implements CreateAddress {
   @IsNotEmpty()
   neighborhood: string;
 
+  @ApiProperty({ type: String, required: false })
+  @IsNumber()
+  @IsOptional()
+  latitude: number;
+
+  @ApiProperty({ type: String, required: false })
+  @IsNumber()
+  @IsOptional()
+  longitude: number;
+
   @ApiProperty({ type: Number, required: true, example: 1 })
   @IsNumber()
   @IsNotEmpty()

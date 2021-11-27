@@ -24,9 +24,30 @@ export class PublicationController implements IPublicationsController {
   @Get()
   async getPublications(
     @Query('page') page: number,
-    @Query('text') searchText: string,
+    @Query('text') text: string,
+    @Query('state') state: string,
+    @Query('zip') zip: string,
+    @Query('garage') garage: string,
+    @Query('bedroom') bedroom: string,
+    @Query('bathroom') bathroom: string,
+    @Query('kitchen') kitchen: string,
+    @Query('value') value: string,
+    @Query('latitude') latitude: string,
+    @Query('longitude') longitude: string,
   ): Promise<Publication[]> {
-    return await this.publicationService.findAll(page, searchText);
+    return await this.publicationService.findAll(
+      page,
+      text,
+      state,
+      zip,
+      garage,
+      bedroom,
+      bathroom,
+      kitchen,
+      value,
+      latitude,
+      longitude,
+    );
   }
 
   @Get(':id')

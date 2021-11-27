@@ -45,6 +45,16 @@ export class UpdateAddressDTO implements UpdateAddress {
   @IsOptional()
   number: number;
 
+  @ApiProperty({ type: String, required: false })
+  @IsNumber()
+  @IsOptional()
+  latitude: number;
+
+  @ApiProperty({ type: String, required: false })
+  @IsNumber()
+  @IsOptional()
+  longitude: number;
+
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsNotEmpty()

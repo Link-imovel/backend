@@ -4,7 +4,19 @@ import UpdatePublicationDTO from '../dto/update.dto';
 
 interface IPublicationsService {
   find: (id: string) => Promise<Publication>;
-  findAll: (page?: number) => Promise<Publication[]>;
+  findAll: (
+    page?: number,
+    searchText?: string,
+    state?: string,
+    zip?: string,
+    garage?: string,
+    bedroom?: string,
+    bathroom?: string,
+    kitchen?: string,
+    value?: string,
+    latitude?: string,
+    longitude?: string,
+  ) => Promise<Publication[]>;
   create: (userId: string, data: CreatePublicationDTO) => Promise<Publication>;
   update: (
     id: string,

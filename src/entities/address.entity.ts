@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Point } from 'geojson';
 import { Home } from './home.entity';
 
 @Entity('addresses')
@@ -40,6 +42,15 @@ export class Address {
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @Index({ spatial: true })
+  @Column({
+    type: 'geography',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+    nullable: true,
+  })
+  location: Point;
 
   @UpdateDateColumn({
     type: 'timestamptz',

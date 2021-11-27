@@ -2,6 +2,7 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class Address1634514823330 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS postgis');
     await queryRunner.createTable(
       new Table({
         name: 'addresses',
@@ -53,6 +54,11 @@ export class Address1634514823330 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'location',
+            type: 'geography',
+            isNullable: true,
+          },
+          {
             name: 'createdAt',
             type: 'timestamptz',
             isNullable: true,
@@ -65,6 +71,7 @@ export class Address1634514823330 implements MigrationInterface {
         ],
       }),
     );
+    await queryRunner.query('CREATE INDEX ON addresses USING gist(location)');
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

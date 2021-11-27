@@ -15,10 +15,10 @@ import { AuthService } from '../auth/auth.service';
 export class TokenService {
   constructor(
     @InjectRepository(Token)
-    private TokenRepository: Repository<Token>,
-    private userService: UsersService,
+    private readonly TokenRepository: Repository<Token>,
+    private readonly userService: UsersService,
     @Inject(forwardRef(() => AuthService))
-    private authService: AuthService,
+    private readonly authService: AuthService,
   ) {}
 
   async saveToken(hash: string, userId: string) {

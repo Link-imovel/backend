@@ -9,7 +9,7 @@ import { IImageService } from './interfaces/images.service';
 export class ImagesService implements IImageService {
   constructor(
     @InjectRepository(Image)
-    private imageRepository: Repository<Image>,
+    private readonly imageRepository: Repository<Image>,
   ) {}
 
   async getImage(imageId: string): Promise<Image> {

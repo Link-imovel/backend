@@ -12,13 +12,25 @@ import { IPublicationsService } from './interfaces/publications.service';
 export class PublicationsService implements IPublicationsService {
   constructor(
     @InjectRepository(Publication)
-    private publicationsRepository: Repository<Publication>,
-    private homesService: HomesService,
+    private readonly publicationsRepository: Repository<Publication>,
+    private readonly homesService: HomesService,
     @InjectRepository(Permission)
-    private permissionRepository: Repository<Permission>,
+    private readonly permissionRepository: Repository<Permission>,
   ) {}
 
-  async findAll(page?: number, searchText?: string): Promise<Publication[]> {
+  async findAll(
+    page?: number,
+    searchText?: string,
+    state?: string,
+    zip?: string,
+    garage?: string,
+    bedroom?: string,
+    bathroom?: string,
+    kitchen?: string,
+    value?: string,
+    latitude?: string,
+    longitude?: string,
+  ): Promise<Publication[]> {
     const take = page ? page * 10 : 10;
     const skip = page > 1 ? page - 1 * take : undefined;
     const commonCondition = { rented: false };
@@ -64,6 +76,25 @@ export class PublicationsService implements IPublicationsService {
         take,
         skip,
       });
+    }
+
+    if (latitude && longitude) {
+      return await this.publicationsRepository.query(
+        `
+        SELECT
+          *
+        FROM
+          publications as p
+          JOIN homes as h ON (p.homeId = h.id)
+          JOIN addresses as a ON (a.id = h.id)
+          JOIN images as i ON (i.homeId = h.id)
+        WHERE
+          ST_DWithin(a.location, ST_MakePoint($1, $2)::geography, 50000)
+        ORDER BY
+          a.location <-> ST_MakePoint($1, $2)::geography;
+        `,
+        [latitude, longitude],
+      );
     }
 
     return await this.publicationsRepository.find({
