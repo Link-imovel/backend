@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -73,7 +72,7 @@ export class UpdateHomeDTO implements UpdateHome {
   readonly serviceArea: number;
 
   @ApiProperty({ type: Number, required: true })
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
   @IsOptional()
   readonly buildAt: Date;

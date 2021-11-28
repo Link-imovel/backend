@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { UpdateUser } from '../interfaces/user';
 
 export class UpdateUserDTO implements UpdateUser {
@@ -52,10 +52,16 @@ export class UpdateUserDTO implements UpdateUser {
   readonly creci: string;
 
   @ApiProperty({ type: Date, required: true, example: Date.now() })
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
   @IsOptional()
   readonly birthday: Date;
+
+  @ApiProperty({ type: Boolean, required: true, example: false })
+  @IsBoolean()
+  @IsNotEmpty()
+  @IsOptional()
+  readonly isActivate: boolean;
 }
 
 export default UpdateUserDTO;

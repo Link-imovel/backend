@@ -69,4 +69,8 @@ export class User {
   })
   @JoinColumn({ name: 'id', referencedColumnName: 'userId' })
   publication: Publication[];
+
+  @OneToOne(() => Permission, { eager: true })
+  @JoinColumn({ name: 'permissionLevel', referencedColumnName: 'id' })
+  permission: Permission;
 }

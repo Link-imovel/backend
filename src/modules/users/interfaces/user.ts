@@ -8,7 +8,6 @@ interface CreateUser {
   creci: string;
   birthday: Date;
   permissionLevel: string;
-  isActivate: boolean;
 }
 
 interface LoginUser {
@@ -27,6 +26,7 @@ interface ResetPasswordUser {
 
 interface UpdateUser extends Partial<CreateUser> {
   password?: string;
+  isActive?: boolean;
 }
 
 export type {
