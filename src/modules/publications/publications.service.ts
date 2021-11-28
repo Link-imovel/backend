@@ -34,6 +34,52 @@ export class PublicationsService implements IPublicationsService {
     const take = page ? page * 10 : 10;
     const skip = page > 1 ? page - 1 * take : undefined;
     const commonCondition = { rented: false };
+    const qb = this.publicationsRepository
+      .createQueryBuilder('p')
+      .innerJoin('p.home', 'h')
+      .innerJoin('p.home.images', 'i')
+      .innerJoin('p.home.address', 'a');
+
+    const conditions = {
+      state,
+      zip,
+      garage,
+      bedroom,
+      bathroom,
+      kitchen,
+      value,
+    };
+
+    Object.keys(conditions).map((key, i) => {
+      if (i === 0) {
+        if (key.match(/(state|zip)/g))
+          qb.where(`a.${key} = :${key}`, { [key]: conditions[key] });
+        if (key.match(/(garage|bedroom|bathroom|kitchen|value)/g))
+          qb.where(`h.${key} = :${key}`, { [key]: conditions[key] });
+      }
+
+      if (i > 0) {
+        if (key.match(/(state|zip)/g))
+          qb.andWhere(`a.${key} = :${key}`, { [key]: conditions[key] });
+        if (key.match(/(garage|bedroom|bathroom|kitchen|value)/g))
+          qb.andWhere(`h.${key} = :${key}`, { [key]: conditions[key] });
+      }
+    });
+
+    if (Object.keys(conditions).length && latitude && longitude) {
+      return await qb
+        .andWhere(
+          `ST_DWithin(a.location, ST_MakePoint(:latitude, :longitude)::geography, 50000)`,
+          { latitude, longitude },
+        )
+        .limit(take)
+        .offset(skip)
+        .getMany();
+    }
+
+    if (Object.keys(conditions).length && !(latitude && longitude)) {
+      return await qb.limit(take).offset(skip).getMany();
+    }
 
     if (searchText) {
       return await this.publicationsRepository.find({
@@ -79,22 +125,12 @@ export class PublicationsService implements IPublicationsService {
     }
 
     if (latitude && longitude) {
-      return await this.publicationsRepository.query(
-        `
-        SELECT
-          *
-        FROM
-          publications as p
-          JOIN homes as h ON (p.homeId = h.id)
-          JOIN addresses as a ON (a.id = h.id)
-          JOIN images as i ON (i.homeId = h.id)
-        WHERE
-          ST_DWithin(a.location, ST_MakePoint($1, $2)::geography, 50000)
-        ORDER BY
-          a.location <-> ST_MakePoint($1, $2)::geography;
-        `,
-        [latitude, longitude],
-      );
+      return await qb
+        .where(
+          `ST_DWithin(a.location, ST_MakePoint(:latitude, :longitude)::geography, 50000)`,
+          { latitude, longitude },
+        )
+        .getMany();
     }
 
     return await this.publicationsRepository.find({
