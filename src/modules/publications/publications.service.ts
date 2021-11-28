@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { Permission } from 'src/entities/permissions.entity';
 import { Publication } from '../../entities/publication.entity';
+import { Image } from '../../entities/image.entity';
 import { HomesService } from '../homes/homes.service';
 import CreatePublicationDTO from './dto/create.dto';
 import UpdatePublicationDTO from './dto/update.dto';
@@ -34,12 +35,6 @@ export class PublicationsService implements IPublicationsService {
     const take = page ? page * 10 : 10;
     const skip = page > 1 ? page - 1 * take : undefined;
     const commonCondition = { rented: false };
-    const qb = this.publicationsRepository
-      .createQueryBuilder('p')
-      .innerJoin('p.home', 'h')
-      .innerJoin('p.home.images', 'i')
-      .innerJoin('p.home.address', 'a');
-
     const conditions = {
       state,
       zip,
@@ -49,6 +44,17 @@ export class PublicationsService implements IPublicationsService {
       kitchen,
       value,
     };
+
+    Object.keys(conditions).forEach(
+      (key) => conditions[key] === undefined && delete conditions[key],
+    );
+    const hasConditions = !!Object.keys(conditions).length;
+
+    const qb = this.publicationsRepository
+      .createQueryBuilder('p')
+      .innerJoinAndSelect('p.home', 'h')
+      .innerJoinAndSelect('h.images', 'i')
+      .innerJoinAndSelect('h.address', 'a');
 
     Object.keys(conditions).map((key, i) => {
       if (i === 0) {
@@ -66,7 +72,8 @@ export class PublicationsService implements IPublicationsService {
       }
     });
 
-    if (Object.keys(conditions).length && latitude && longitude) {
+    if (hasConditions && latitude && longitude) {
+      console.log(1);
       return await qb
         .andWhere(
           `ST_DWithin(a.location, ST_MakePoint(:latitude, :longitude)::geography, 50000)`,
@@ -77,7 +84,7 @@ export class PublicationsService implements IPublicationsService {
         .getMany();
     }
 
-    if (Object.keys(conditions).length && !(latitude && longitude)) {
+    if (hasConditions && !(latitude && longitude)) {
       return await qb.limit(take).offset(skip).getMany();
     }
 

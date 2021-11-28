@@ -6,6 +6,7 @@ import { CreatePublication } from '../interfaces/publication';
 export class CreatePublicationDTO implements CreatePublication {
   @ApiProperty({ type: String, required: true })
   @IsString()
+  @IsOptional()
   readonly userId: string;
 
   @ApiProperty({ type: String, nullable: true })
