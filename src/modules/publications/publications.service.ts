@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { Permission } from 'src/entities/permissions.entity';
 import { Publication } from '../../entities/publication.entity';
-import { Image } from '../../entities/image.entity';
 import { HomesService } from '../homes/homes.service';
 import CreatePublicationDTO from './dto/create.dto';
 import UpdatePublicationDTO from './dto/update.dto';
