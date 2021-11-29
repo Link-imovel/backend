@@ -48,7 +48,6 @@ export class User {
   birthday: Date;
 
   @Column('uuid')
-  @OneToOne(() => Permission)
   permissionLevel: string;
 
   @Column({ nullable: true })
