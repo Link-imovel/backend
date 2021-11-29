@@ -64,9 +64,7 @@ export class User {
   })
   updatedAt: Date;
 
-  @OneToMany(() => Publication, (publication) => publication.userId, {
-    eager: true,
-  })
+  @OneToMany(() => Publication, (publication) => publication.userId)
   @JoinColumn({ name: 'id', referencedColumnName: 'userId' })
   publication: Publication[];
 

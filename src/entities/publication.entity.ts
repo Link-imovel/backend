@@ -55,4 +55,8 @@ export class Publication {
   @OneToOne(() => Home, (home) => home, { eager: true })
   @JoinColumn({ name: 'homeId', referencedColumnName: 'id' })
   home: Home;
+
+  @OneToOne(() => User, (user) => user, { eager: true })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  user: User;
 }

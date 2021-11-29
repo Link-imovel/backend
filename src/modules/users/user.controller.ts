@@ -74,6 +74,7 @@ export class UserController implements IUserController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getUsers(@Request() req: any): Promise<User[]> {
+    console.log(req);
     return await this.userService.findAll(req.user);
   }
 
